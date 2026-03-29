@@ -1,26 +1,370 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #efe0c9;
+  --foreground: #221510;
+  --accent: #9f2d20;
+  --accent-soft: #d26b4f;
+  --panel: rgba(255, 250, 244, 0.95);
+  --panel-strong: rgba(255, 253, 249, 0.98);
+  --line: rgba(77, 45, 31, 0.2);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-story-serif);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
 }
 
 body {
+  min-height: 100vh;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-story-serif), serif;
+  background-image: radial-gradient(
+      circle at top left,
+      rgba(207, 117, 76, 0.18),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(119, 74, 49, 0.12),
+      transparent 30%
+    ),
+    linear-gradient(180deg, #fbf3e9 0%, #f3e4d0 44%, #ebd7bc 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.game-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.game-shell::before,
+.game-shell::after {
+  content: '';
+  position: absolute;
+  inset: auto;
+  pointer-events: none;
+}
+
+.game-shell::before {
+  top: -8rem;
+  right: -6rem;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(159, 45, 32, 0.18) 0%,
+    rgba(159, 45, 32, 0) 68%
+  );
+}
+
+.game-shell::after {
+  bottom: -10rem;
+  left: -8rem;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(64, 38, 27, 0.1) 0%,
+    rgba(64, 38, 27, 0) 68%
+  );
+}
+
+.paper-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 80px rgba(71, 39, 27, 0.14);
+  backdrop-filter: blur(12px);
+}
+
+.story-title {
+  font-family: var(--font-story-display), serif;
+  letter-spacing: 0.06em;
+}
+
+.story-body p {
+  margin: 0;
+  line-height: 1.95;
+}
+
+.story-choice-button {
+  height: auto !important;
+  min-height: 3.5rem;
+  white-space: normal;
+  justify-content: flex-start;
+  padding-block: 0.85rem !important;
+}
+
+.story-meta {
+  border: 1px solid rgba(159, 45, 32, 0.16);
+  background: rgba(255, 253, 249, 0.9);
+}
+
+.ending-seal {
+  background: linear-gradient(
+    135deg,
+    rgba(159, 45, 32, 0.14),
+    rgba(210, 107, 79, 0.08)
+  );
+  border: 1px solid rgba(159, 45, 32, 0.24);
+}
+
+.achievement-fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 60;
+}
+
+.achievement-fab::before {
+  content: '';
+  position: absolute;
+  inset: -0.5rem;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 183, 77, 0.28),
+    rgba(255, 183, 77, 0)
+  );
+  animation: achievementPulse 2.8s ease-in-out infinite;
+}
+
+.achievement-constellation {
+  position: relative;
+  min-height: 52rem;
+}
+
+.achievement-orbit-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 52rem;
+}
+
+.achievement-orbit-branches {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.achievement-constellation::before {
+  content: '';
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 15rem;
+  height: 15rem;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 214, 140, 0.95),
+    rgba(220, 160, 89, 0.26)
+  );
+  filter: blur(0.3px);
+  box-shadow: 0 0 0 1px rgba(184, 112, 52, 0.2),
+    0 0 60px rgba(204, 143, 74, 0.24);
+}
+
+.achievement-center {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 13rem;
+  height: 13rem;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(201, 148, 87, 0.95),
+    rgba(165, 104, 55, 0.92)
+  );
+  color: #fff7ef;
+  box-shadow: 0 18px 38px rgba(116, 67, 30, 0.26);
+}
+
+.achievement-node {
+  position: absolute;
+  width: 10rem;
+  border-radius: 1.2rem;
+  background: rgba(255, 247, 237, 0.98);
+  border: 1px solid rgba(177, 120, 70, 0.28);
+  box-shadow: 0 16px 36px rgba(88, 55, 31, 0.12);
+}
+
+.achievement-node[data-anchor='top-left'] {
+  left: 4%;
+  top: 10%;
+}
+
+.achievement-node[data-anchor='top'] {
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.achievement-node[data-anchor='top-right'] {
+  right: 4%;
+  top: 12%;
+}
+
+.achievement-node[data-anchor='right'] {
+  right: -1%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.achievement-node[data-anchor='bottom-right'] {
+  right: 9%;
+  bottom: 3%;
+}
+
+.achievement-node[data-anchor='bottom-left'] {
+  left: 4%;
+  bottom: 4%;
+}
+
+.achievement-node[data-anchor='top-left']::before {
+  transform: rotate(42deg);
+}
+
+.achievement-node[data-anchor='top']::before {
+  transform: rotate(90deg);
+}
+
+.achievement-node[data-anchor='top-right']::before {
+  transform: rotate(138deg);
+}
+
+.achievement-node[data-anchor='right']::before {
+  transform: rotate(180deg);
+}
+
+.achievement-node[data-anchor='bottom-right']::before {
+  transform: rotate(222deg);
+}
+
+.achievement-node[data-anchor='bottom-left']::before {
+  transform: rotate(318deg);
+}
+
+.achievement-node[data-complete='true'] {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 238, 210, 0.99),
+    rgba(247, 223, 186, 0.99)
+  );
+}
+
+.achievement-grade-badge {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.achievement-grade-jia {
+  background: linear-gradient(180deg, #ffde91, #d89a2f);
+  color: #5c3511;
+}
+
+.achievement-grade-yi {
+  background: linear-gradient(180deg, #ffd1ae, #d26b4f);
+  color: #5f2416;
+}
+
+.achievement-grade-bing {
+  background: linear-gradient(180deg, #f7f8fb, #b9c3d6);
+  color: #31415c;
+}
+
+.achievement-toast {
+  overflow: hidden;
+  position: relative;
+}
+
+.achievement-toast::after {
+  content: '';
+  position: absolute;
+  inset: -80% auto auto -30%;
+  width: 7rem;
+  height: 14rem;
+  transform: rotate(24deg);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.48),
+    rgba(255, 255, 255, 0)
+  );
+  animation: achievementShine 2.8s ease-in-out infinite;
+}
+
+@keyframes achievementPulse {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.48;
+  }
+
+  50% {
+    transform: scale(1.12);
+    opacity: 0.12;
+  }
+}
+
+@keyframes achievementShine {
+  0% {
+    transform: translateX(-20%) rotate(24deg);
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translateX(180%) rotate(24deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .game-shell::before {
+    top: -10rem;
+    right: -10rem;
+  }
+
+  .game-shell::after {
+    bottom: -12rem;
+    left: -12rem;
+  }
+
+  .achievement-constellation {
+    min-height: auto;
+    display: grid;
+    gap: 0.9rem;
+  }
+  
+  .achievement-center,
+  .achievement-node {
+    position: static;
+    transform: none;
+    width: 100%;
+  }
 }
