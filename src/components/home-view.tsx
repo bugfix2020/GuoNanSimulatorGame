@@ -7,10 +7,10 @@ import {
   Card,
   Divider,
   Modal,
-  Progress,
   Radio,
   Segmented,
   Select,
+  Steps,
   Tag,
   Typography,
 } from 'antd';
@@ -23,10 +23,46 @@ import {
   MBTI_REFERENCE_NOTES,
   MBTI_TYPES,
   type MbtiCode,
+  type PlayerAttributeId,
 } from '@/lib/player-profile';
 import type { HomeStory } from '@/lib/story';
 
 const { Paragraph, Text, Title } = Typography;
+
+const PROFILE_RADAR_AXES: Array<{ key: PlayerAttributeId; label: string }> = [
+  { key: 'force', label: '武力' },
+  { key: 'intelligence', label: '智力' },
+  { key: 'tenacity', label: '坚韧' },
+  { key: 'compassion', label: '怜悯' },
+  { key: 'apathy', label: '冷漠' },
+];
+
+function getRadarPoint(
+  axisIndex: number,
+  ratio: number,
+  radius: number,
+  center: number,
+  axisTotal: number
+) {
+  const angle = ((-90 + (360 / axisTotal) * axisIndex) * Math.PI) / 180;
+
+  return {
+    x: center + Math.cos(angle) * radius * ratio,
+    y: center + Math.sin(angle) * radius * ratio,
+  };
+}
+
+function buildRadarPolygonPoints(
+  ratio: number,
+  radius: number,
+  center: number,
+  axisTotal: number
+) {
+  return PROFILE_RADAR_AXES.map((_, axisIndex) => {
+    const point = getRadarPoint(axisIndex, ratio, radius, center, axisTotal);
+    return `${point.x},${point.y}`;
+  }).join(' ');
+}
 
 type HomeViewProps = {
   story: HomeStory;
@@ -45,11 +81,17 @@ export function HomeView({ story }: HomeViewProps) {
   const [quizAnswers, setQuizAnswers] = useState<Record<string, 'A' | 'B'>>({});
   const [quizResult, setQuizResult] = useState<MbtiCode | null>(null);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [currentQuizStep, setCurrentQuizStep] = useState(0);
 
   const canSubmitQuiz = useMemo(
     () => MBTI_QUIZ_QUESTIONS.every((question) => !!quizAnswers[question.id]),
     [quizAnswers]
   );
+  const totalQuizSteps = MBTI_QUIZ_QUESTIONS.length;
+  const activeQuestion = MBTI_QUIZ_QUESTIONS[currentQuizStep];
+  const activeQuestionAnswer = activeQuestion
+    ? quizAnswers[activeQuestion.id]
+    : undefined;
 
   const startLocked = !profile;
 
@@ -98,30 +140,28 @@ export function HomeView({ story }: HomeViewProps) {
                 ))}
               </div>
 
-              <div className='flex flex-wrap items-center gap-3'>
-                {profile ? (
-                  <Alert
-                    type='success'
-                    showIcon
-                    className='!m-0'
-                    message={`人格已设定：${profile.mbti}`}
-                    description='属性将影响部分关键分支选项。'
-                  />
-                ) : (
-                  <Alert
-                    type='warning'
-                    showIcon
-                    className='!m-0'
-                    message='请先进行人格设定'
-                    description='点击“人格设定”按钮，通过直选或测试完成初始化。'
-                  />
-                )}
-                <Button
-                  type='primary'
-                  onClick={() => setProfileModalOpen(true)}
-                >
-                  人格设定（弹窗）
-                </Button>
+              <div className='sm:max-w-md'>
+                <Card className='w-full rounded-[20px] border border-[#e4c9aa] bg-[#fff8ee]'>
+                  <div className='flex flex-wrap items-center justify-between gap-3'>
+                    <div className='flex flex-col'>
+                      <Text className='text-sm text-[#7a4b36]'>
+                        {profile
+                          ? `人格已设定：${profile.mbti}`
+                          : '尚未设定人格，部分剧情选项会被锁定'}
+                      </Text>
+                      <Text className='text-xs text-[#9a6a51]'>
+                        通过弹窗完成 MBTI 直选或测试题初始化。
+                      </Text>
+                    </div>
+                    <Button
+                      type={profile ? 'default' : 'primary'}
+                      shape='round'
+                      onClick={() => setProfileModalOpen(true)}
+                    >
+                      打开人格设定
+                    </Button>
+                  </div>
+                </Card>
               </div>
 
               <div className='grid gap-3 sm:max-w-md'>
@@ -170,8 +210,8 @@ export function HomeView({ story }: HomeViewProps) {
                 })}
 
                 {startLocked ? (
-                  <Text className='text-xs text-[#9f2d20]'>
-                    请先完成人格设定，才可进入剧情分支。
+                  <Text className='text-xs text-[#8e5a45]'>
+                    完成人格设定后即可开始剧情。
                   </Text>
                 ) : null}
               </div>
@@ -236,7 +276,21 @@ export function HomeView({ story }: HomeViewProps) {
                 { label: '直接选择 MBTI', value: 'manual' },
                 { label: '完成测试题', value: 'quiz' },
               ]}
-              onChange={(value) => setEntryMode(value as 'manual' | 'quiz')}
+              onChange={(value) => {
+                const nextMode = value as 'manual' | 'quiz';
+                setEntryMode(nextMode);
+
+                if (nextMode === 'quiz') {
+                  const firstUnansweredIndex = MBTI_QUIZ_QUESTIONS.findIndex(
+                    (question) => !quizAnswers[question.id]
+                  );
+                  setCurrentQuizStep(
+                    firstUnansweredIndex === -1
+                      ? totalQuizSteps - 1
+                      : firstUnansweredIndex
+                  );
+                }
+              }}
             />
 
             {entryMode === 'manual' ? (
@@ -263,44 +317,73 @@ export function HomeView({ story }: HomeViewProps) {
                 <Alert
                   type='info'
                   showIcon
-                  message={`测试进度：${Object.keys(quizAnswers).length} / ${MBTI_QUIZ_QUESTIONS.length}`}
+                  message={`测试进度：${Object.keys(quizAnswers).length} / ${totalQuizSteps}（第 ${currentQuizStep + 1} 题）`}
                   description='题目依据为内置四维解释改写版。'
                 />
-                {MBTI_QUIZ_QUESTIONS.map((question) => (
+                <Steps
+                  size='small'
+                  current={currentQuizStep}
+                  items={MBTI_QUIZ_QUESTIONS.map((_, index) => ({
+                    title: `题 ${index + 1}`,
+                  }))}
+                />
+
+                {activeQuestion ? (
                   <Card
-                    key={question.id}
+                    key={activeQuestion.id}
                     className='rounded-[16px] border-0 bg-[#fffaf2]'
                     styles={{ body: { padding: 14 } }}
                   >
                     <div className='flex flex-col gap-2'>
-                      <Text strong>{question.prompt}</Text>
+                      <Text strong>{activeQuestion.prompt}</Text>
                       <Radio.Group
-                        value={quizAnswers[question.id]}
+                        value={activeQuestionAnswer}
                         onChange={(event) => {
                           setQuizAnswers((previous) => ({
                             ...previous,
-                            [question.id]: event.target.value,
+                            [activeQuestion.id]: event.target.value,
                           }));
                         }}
                       >
                         <div className='flex flex-col gap-2'>
-                          <Radio value='A'>{question.optionA.label}</Radio>
-                          <Radio value='B'>{question.optionB.label}</Radio>
+                          <Radio value='A'>{activeQuestion.optionA.label}</Radio>
+                          <Radio value='B'>{activeQuestion.optionB.label}</Radio>
                         </div>
                       </Radio.Group>
                     </div>
                   </Card>
-                ))}
-                <Button
-                  type='primary'
-                  disabled={!canSubmitQuiz}
-                  onClick={() => {
-                    const mbti = setProfileByQuizAnswers(quizAnswers);
-                    setQuizResult(mbti);
-                  }}
-                >
-                  提交测试并应用属性
-                </Button>
+                ) : null}
+
+                <div className='flex items-center justify-end gap-2'>
+                  <Button
+                    disabled={currentQuizStep === 0}
+                    onClick={() => setCurrentQuizStep((step) => Math.max(step - 1, 0))}
+                  >
+                    上一步
+                  </Button>
+                  {currentQuizStep === totalQuizSteps - 1 ? (
+                    <Button
+                      type='primary'
+                      disabled={!canSubmitQuiz}
+                      onClick={() => {
+                        const mbti = setProfileByQuizAnswers(quizAnswers);
+                        setQuizResult(mbti);
+                      }}
+                    >
+                      完成测试并应用
+                    </Button>
+                  ) : (
+                    <Button
+                      type='primary'
+                      disabled={!activeQuestionAnswer}
+                      onClick={() =>
+                        setCurrentQuizStep((step) => Math.min(step + 1, totalQuizSteps - 1))
+                      }
+                    >
+                      下一步
+                    </Button>
+                  )}
+                </div>
               </div>
             )}
 
@@ -314,30 +397,124 @@ export function HomeView({ story }: HomeViewProps) {
             ) : null}
 
             {profile ? (
-              <div className='grid gap-2 sm:grid-cols-2'>
-                {[
-                  { key: 'force', label: '武力' },
-                  { key: 'intelligence', label: '智力' },
-                  { key: 'tenacity', label: '坚韧' },
-                  { key: 'compassion', label: '怜悯' },
-                  { key: 'apathy', label: '冷漠' },
-                ].map((item) => {
-                  const value =
-                    profile.attributes[item.key as keyof typeof profile.attributes];
-                  return (
-                    <div key={item.key}>
-                      <div className='mb-1 flex items-center justify-between text-xs text-[#7a4d3b]'>
-                        <span>{item.label}</span>
-                        <span>{value}</span>
-                      </div>
-                      <Progress
-                        percent={value}
-                        showInfo={false}
-                        strokeColor='#c66d42'
+              <div className='rounded-[16px] border border-[#e4c9aa] bg-[#fffaf2] p-3'>
+                <div className='mx-auto w-full max-w-[360px]'>
+                  <svg
+                    viewBox='0 0 260 260'
+                    className='h-[260px] w-full'
+                    role='img'
+                    aria-label='人格属性雷达图'
+                  >
+                    {[0.25, 0.5, 0.75, 1].map((ring) => (
+                      <polygon
+                        key={ring}
+                        points={buildRadarPolygonPoints(ring, 104, 130, PROFILE_RADAR_AXES.length)}
+                        fill='none'
+                        stroke='rgba(122, 75, 54, 0.35)'
+                        strokeWidth='1'
                       />
+                    ))}
+
+                    {PROFILE_RADAR_AXES.map((axis, axisIndex) => {
+                      const edgePoint = getRadarPoint(
+                        axisIndex,
+                        1,
+                        104,
+                        130,
+                        PROFILE_RADAR_AXES.length
+                      );
+                      const labelPoint = getRadarPoint(
+                        axisIndex,
+                        1.2,
+                        104,
+                        130,
+                        PROFILE_RADAR_AXES.length
+                      );
+
+                      return (
+                        <g key={axis.key}>
+                          <line
+                            x1='130'
+                            y1='130'
+                            x2={edgePoint.x}
+                            y2={edgePoint.y}
+                            stroke='rgba(122, 75, 54, 0.45)'
+                            strokeWidth='1'
+                          />
+                          <text
+                            x={labelPoint.x}
+                            y={labelPoint.y}
+                            textAnchor='middle'
+                            dominantBaseline='middle'
+                            fill='#6f4a3b'
+                            fontSize='12'
+                          >
+                            {axis.label}
+                          </text>
+                        </g>
+                      );
+                    })}
+
+                    <polygon
+                      points={buildRadarPolygonPoints(
+                        1,
+                        104,
+                        130,
+                        PROFILE_RADAR_AXES.length
+                      )}
+                      fill='none'
+                      stroke='rgba(0, 0, 0, 0.08)'
+                      strokeWidth='0.8'
+                    />
+
+                    <polygon
+                      points={PROFILE_RADAR_AXES.map((axis, axisIndex) => {
+                        const point = getRadarPoint(
+                          axisIndex,
+                          profile.attributes[axis.key] / 100,
+                          104,
+                          130,
+                          PROFILE_RADAR_AXES.length
+                        );
+                        return `${point.x},${point.y}`;
+                      }).join(' ')}
+                      fill='rgba(46, 111, 181, 0.35)'
+                      stroke='#2e6fb5'
+                      strokeWidth='2'
+                    />
+
+                    {PROFILE_RADAR_AXES.map((axis, axisIndex) => {
+                      const point = getRadarPoint(
+                        axisIndex,
+                        profile.attributes[axis.key] / 100,
+                        104,
+                        130,
+                        PROFILE_RADAR_AXES.length
+                      );
+
+                      return (
+                        <circle
+                          key={`point-${axis.key}`}
+                          cx={point.x}
+                          cy={point.y}
+                          r='3'
+                          fill='#2e6fb5'
+                        />
+                      );
+                    })}
+                  </svg>
+                </div>
+
+                <div className='mt-2 grid grid-cols-2 gap-2 text-xs text-[#6f4a3b] sm:grid-cols-5'>
+                  {PROFILE_RADAR_AXES.map((axis) => (
+                    <div
+                      key={`meta-${axis.key}`}
+                      className='rounded-md bg-[#f8eee2] px-2 py-1 text-center'
+                    >
+                      {axis.label} {profile.attributes[axis.key]}
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
               </div>
             ) : null}
 
