@@ -186,7 +186,7 @@ export const sceneMap: Record<string, StoryNode> = {
       '一次客户会后，有人拍了你并配文“疑似偷拍男”发到本地群，视频开始扩散。你决定：',
     ],
     choices: [
-      { label: '当场追上去争辩', href: '/scenes/scenechapter2_confront' },
+      { label: '当场追上去争辩并抢手机', href: '/endings/endingchapter2_boomerang' },
       { label: '先调取会议与门禁记录', href: '/scenes/scenechapter2_collect' },
     ],
   },
@@ -199,7 +199,7 @@ export const sceneMap: Record<string, StoryNode> = {
       '围观者开始二次录制，你准备：',
     ],
     choices: [
-      { label: '继续在线上逐条回怼', href: '/scenes/scenechapter2_spiral' },
+      { label: '继续在线上逐条回怼', href: '/endings/endingchapter2_boomerang' },
       { label: '停止争吵并报警备案', href: '/scenes/scenechapter2_filing' },
     ],
   },
@@ -212,7 +212,7 @@ export const sceneMap: Record<string, StoryNode> = {
       '你下一步要：',
     ],
     choices: [
-      { label: '马上发长文自证', href: '/scenes/scenechapter2_hastyproof' },
+      { label: '马上发长文自证并附路人截图', href: '/endings/endingchapter2_overproof' },
       { label: '先让律师统一对外发声', href: '/scenes/scenechapter2_lawyerwindow' },
     ],
   },
@@ -239,7 +239,7 @@ export const sceneMap: Record<string, StoryNode> = {
     ],
     choices: [
       { label: '联系公司法务并申请说明', href: '/scenes/scenechapter2_orgsupport' },
-      { label: '只做个人处理', href: '/scenes/scenechapter2_solo' },
+      { label: '只做个人处理并继续刷屏回应', href: '/endings/endingchapter2_rebuild' },
     ],
   },
   scenechapter2_hastyproof: {
@@ -278,7 +278,7 @@ export const sceneMap: Record<string, StoryNode> = {
     ],
     choices: [
       { label: '先起诉首发账号', href: '/endings/endingchapter2_singlewin' },
-      { label: '首发与高传播账号一并追责', href: '/endings/endingchapter2_fullclean' },
+      { label: '首发与高传播账号一并追责', href: '/scenes/scenechapter2_orgsupport' },
     ],
   },
   scenechapter2_orgsupport: {
@@ -291,7 +291,7 @@ export const sceneMap: Record<string, StoryNode> = {
     ],
     choices: [
       { label: '公司联动平台投诉侵权内容', href: '/endings/endingchapter2_comeback' },
-      { label: '个人继续推进公开澄清', href: '/scenes/scenechapter2_publicclarify' },
+      { label: '个人继续推进公开澄清', href: '/endings/endingchapter2_fullclean' },
     ],
   },
   scenechapter2_solo: {
@@ -345,7 +345,7 @@ export const sceneMap: Record<string, StoryNode> = {
     ],
     choices: [
       { label: '先做基础信息核验', href: '/scenes/scenechapter3_verify' },
-      { label: '不想多想，快速推进关系', href: '/scenes/scenechapter3_fasttrack' },
+      { label: '不想多想，快速推进关系', href: '/endings/endingchapter3_chainloss' },
     ],
   },
   scenechapter3_verify: {
@@ -357,7 +357,7 @@ export const sceneMap: Record<string, StoryNode> = {
       '你打算：',
     ],
     choices: [
-      { label: '直接提出疑问', href: '/scenes/scenechapter3_askdirect' },
+      { label: '直接公开聊天记录质问对方', href: '/endings/endingchapter3_backfire' },
       { label: '先记录证据再观察', href: '/scenes/scenechapter3_keepnote' },
     ],
   },
@@ -370,7 +370,7 @@ export const sceneMap: Record<string, StoryNode> = {
       '你选择：',
     ],
     choices: [
-      { label: '先转账救急', href: '/scenes/scenechapter3_transfer' },
+      { label: '先转账救急', href: '/endings/endingchapter3_chainloss' },
       { label: '只走可追溯的正规支付', href: '/scenes/scenechapter3_formalpay' },
     ],
   },
@@ -383,7 +383,7 @@ export const sceneMap: Record<string, StoryNode> = {
       '你准备：',
     ],
     choices: [
-      { label: '继续推进关系', href: '/scenes/scenechapter3_upgrade' },
+      { label: '继续推进关系并先交钱', href: '/endings/endingchapter3_servicepit' },
       { label: '先咨询律师再决定', href: '/scenes/scenechapter3_lawcheck' },
     ],
   },
@@ -396,7 +396,7 @@ export const sceneMap: Record<string, StoryNode> = {
       '你选择：',
     ],
     choices: [
-      { label: '答应快速订婚', href: '/scenes/scenechapter3_quickengage' },
+      { label: '答应快速订婚', href: '/endings/endingchapter3_sunkcost' },
       { label: '坚持放慢节奏并核验家庭信息', href: '/scenes/scenechapter3_slowdown' },
     ],
   },
@@ -503,7 +503,7 @@ export const sceneMap: Record<string, StoryNode> = {
     ],
     choices: [
       { label: '先安抚并记录细节', href: '/scenes/scenechapter4_record' },
-      { label: '先在家长群公开指责', href: '/scenes/scenechapter4_publicaccuse' },
+      { label: '先在家长群公开指责并点名', href: '/endings/endingchapter4_reversalrisk' },
     ],
   },
   scenechapter4_record: {
@@ -516,7 +516,7 @@ export const sceneMap: Record<string, StoryNode> = {
     ],
     choices: [
       { label: '先联系其他家长交叉核验', href: '/scenes/scenechapter4_crosscheck' },
-      { label: '先私下找机构负责人', href: '/scenes/scenechapter4_privatetalk' },
+      { label: '先私下找机构负责人并接受私了', href: '/endings/endingchapter4_hushmoney' },
     ],
   },
   scenechapter4_publicaccuse: {
@@ -528,7 +528,7 @@ export const sceneMap: Record<string, StoryNode> = {
       '你下一步：',
     ],
     choices: [
-      { label: '继续发布未核实名单和截图', href: '/scenes/scenechapter4_escalate' },
+      { label: '继续发布未核实名单和截图', href: '/endings/endingchapter4_reversalrisk' },
       { label: '删帖并改为征集线索', href: '/scenes/scenechapter4_collectclues' },
     ],
   },
@@ -809,6 +809,8 @@ export const endingMap: Record<string, StoryNode> = {
       '你意识到：没有证据节奏，声音越大不代表越有效。',
     ],
     choices: [{ label: '重来第二章', href: '/scenes/scenechapter2_meeting' }],
+    source: 'https://www.zaobao.com.sg/realtime/china/story20230613-1404037',
+    keywords: '广州 地铁 误指控 挂网',
   },
   endingchapter2_overproof: {
     id: 'endingchapter2_overproof',
@@ -820,6 +822,8 @@ export const endingMap: Record<string, StoryNode> = {
       '原本可控的名誉纠纷，变成了更复杂的合规风险。',
     ],
     choices: [{ label: '重来第二章', href: '/scenes/scenechapter2_meeting' }],
+    source: 'https://www.news.cn/20250912/74f132d6ffc34285b1d3fc07427f970b/c.html',
+    keywords: '成都 地铁 拍摄误会 取证',
   },
   endingchapter2_limitedloss: {
     id: 'endingchapter2_limitedloss',
@@ -831,6 +835,8 @@ export const endingMap: Record<string, StoryNode> = {
       '但公开层面的澄清仍有灰度，后续仍需谨慎管理舆情。',
     ],
     choices: [{ label: '重来第二章', href: '/scenes/scenechapter2_meeting' }],
+    source: 'https://www.news.cn/politics/20250920/9ebf1e3922b4482581099d8d97bc4145/c.html',
+    keywords: '校园 指控争议 校方撤销处分',
   },
   endingchapter2_singlewin: {
     id: 'endingchapter2_singlewin',
@@ -842,6 +848,8 @@ export const endingMap: Record<string, StoryNode> = {
       '这是“低风险、低覆盖”的典型维权结果。',
     ],
     choices: [{ label: '重来第二章', href: '/scenes/scenechapter2_meeting' }],
+    source: 'https://www.yzwb.net/news/zntt/202501/t20250116_190538.html',
+    keywords: '长春 公交 挂网 维权 一审',
   },
   endingchapter2_fullclean: {
     id: 'endingchapter2_fullclean',
@@ -853,6 +861,8 @@ export const endingMap: Record<string, StoryNode> = {
       '名誉修复慢一些，却更稳定。',
     ],
     choices: [{ label: '重来第二章', href: '/scenes/scenechapter2_meeting' }],
+    source: 'https://www.xhby.net/content/s68c29ae9e4b0eca682625521.html',
+    keywords: '公共场所 误会 后续民事诉讼',
   },
   endingchapter2_comeback: {
     id: 'endingchapter2_comeback',
@@ -864,6 +874,8 @@ export const endingMap: Record<string, StoryNode> = {
       '你决定把这套方法带进下一段生活议题。',
     ],
     choices: [{ label: '进入第三章：婚恋财产安全', href: '/scenes/scenechapter3_start' }],
+    source: 'https://www.yzwb.net/news/zntt/202501/t20250116_190538.html',
+    keywords: '名誉维权 调监控 起诉',
   },
   endingchapter2_rebuild: {
     id: 'endingchapter2_rebuild',
@@ -875,6 +887,8 @@ export const endingMap: Record<string, StoryNode> = {
       '虽然短期名誉修复较慢，但你保住了长期行动能力。',
     ],
     choices: [{ label: '重来第二章', href: '/scenes/scenechapter2_meeting' }],
+    source: 'https://k.sina.cn/article_7517400647_1c0126e47059021e9y.html',
+    keywords: '校园 误伤 爆料 网暴',
   },
 
   // 第三章：婚恋财产安全线
@@ -888,6 +902,8 @@ export const endingMap: Record<string, StoryNode> = {
       '当你回头时，关系和钱都已失控。',
     ],
     choices: [{ label: '重来第三章', href: '/scenes/scenechapter3_start' }],
+    source: 'https://www.court.gov.cn/zixun/xiangqing/486051.html',
+    keywords: '重复订婚 骗取财物 最高法典型案例',
   },
   endingchapter3_backfire: {
     id: 'endingchapter3_backfire',
@@ -899,6 +915,8 @@ export const endingMap: Record<string, StoryNode> = {
       '你在情绪战里消耗了本该用于维权的时间窗口。',
     ],
     choices: [{ label: '重来第三章', href: '/scenes/scenechapter3_start' }],
+    source: 'https://www.court.gov.cn/zixun/xiangqing/419922.html',
+    keywords: '婚约纠纷 证据不足 风险放大',
   },
   endingchapter3_servicepit: {
     id: 'endingchapter3_servicepit',
@@ -910,6 +928,8 @@ export const endingMap: Record<string, StoryNode> = {
       '关系被包装成流程，流程只服务于继续收款。',
     ],
     choices: [{ label: '重来第三章', href: '/scenes/scenechapter3_start' }],
+    source: 'https://www.court.gov.cn/zixun/xiangqing/456091.html',
+    keywords: '婚介 17万元 服务费 返还',
   },
   endingchapter3_quitintime: {
     id: 'endingchapter3_quitintime',
@@ -921,6 +941,8 @@ export const endingMap: Record<string, StoryNode> = {
       '这不是失败，而是把损失锁在可承受区间。',
     ],
     choices: [{ label: '重来第三章', href: '/scenes/scenechapter3_start' }],
+    source: 'https://www.court.gov.cn/zixun/xiangqing/419922.html',
+    keywords: '短婚高彩礼 酌情返还 风险控制',
   },
   endingchapter3_civilrecover: {
     id: 'endingchapter3_civilrecover',
@@ -932,6 +954,8 @@ export const endingMap: Record<string, StoryNode> = {
       '程序成本不低，却比无序消耗更可控。',
     ],
     choices: [{ label: '重来第三章', href: '/scenes/scenechapter3_start' }],
+    source: 'https://www.court.gov.cn/zixun/xiangqing/455871.html',
+    keywords: '彩礼返还 另行登记 民事救济',
   },
   endingchapter3_sunkcost: {
     id: 'endingchapter3_sunkcost',
@@ -943,6 +967,8 @@ export const endingMap: Record<string, StoryNode> = {
       '真正的拐点本来就在第一次违和感出现时。',
     ],
     choices: [{ label: '重来第三章', href: '/scenes/scenechapter3_start' }],
+    source: 'https://www.court.gov.cn/zixun/xiangqing/486051.html',
+    keywords: '多被害人 高频婚骗 刑事处理',
   },
   endingchapter3_proceduralwin: {
     id: 'endingchapter3_proceduralwin',
@@ -954,6 +980,8 @@ export const endingMap: Record<string, StoryNode> = {
       '不是每段关系都能继续，但你终于掌握了可复制的自我保护机制。',
     ],
     choices: [{ label: '进入第四章：未成年人保护', href: '/scenes/scenechapter4_start' }],
+    source: 'https://www.court.gov.cn/zixun/xiangqing/456091.html',
+    keywords: '最高法 彩礼纠纷 风险提示',
   },
 
   // 第四章：未成年人保护与程序防线
@@ -967,6 +995,8 @@ export const endingMap: Record<string, StoryNode> = {
       '你保住了平静，也失去了推动系统改进的窗口。',
     ],
     choices: [{ label: '重来第四章', href: '/scenes/scenechapter4_start' }],
+    source: 'https://www.chinanews.com.cn/sh/2020/07-18/9242545.shtml',
+    keywords: '男童 身体边界 机构事件',
   },
   endingchapter4_hushmoney: {
     id: 'endingchapter4_hushmoney',
@@ -978,6 +1008,8 @@ export const endingMap: Record<string, StoryNode> = {
       '问题看似结束，但风险没有被系统性识别。',
     ],
     choices: [{ label: '重来第四章', href: '/scenes/scenechapter4_start' }],
+    source: 'https://www.thepaper.cn/newsDetail_forward_8226820',
+    keywords: '男童 亲吻视频 二次传播',
   },
   endingchapter4_reversalrisk: {
     id: 'endingchapter4_reversalrisk',
@@ -989,6 +1021,8 @@ export const endingMap: Record<string, StoryNode> = {
       '事实尚未澄清，自己先陷入程序被动。',
     ],
     choices: [{ label: '重来第四章', href: '/scenes/scenechapter4_start' }],
+    source: 'https://m.gmw.cn/2024-03/25/content_1303695057.htm',
+    keywords: '幼教 伤害事件 舆论反噬',
   },
   endingchapter4_weakcase: {
     id: 'endingchapter4_weakcase',
@@ -1000,6 +1034,8 @@ export const endingMap: Record<string, StoryNode> = {
       '案件推进受阻，最终只剩各说各话。',
     ],
     choices: [{ label: '重来第四章', href: '/scenes/scenechapter4_start' }],
+    source: 'https://nx.jcy.gov.cn/plxy/ygwj/201904/t20190401_618781.html',
+    keywords: '男童 偷拍 传播 取证困难',
   },
   endingchapter4_halfsettle: {
     id: 'endingchapter4_halfsettle',
@@ -1011,6 +1047,8 @@ export const endingMap: Record<string, StoryNode> = {
       '这条路适合止损，不适合追求完整事实复盘。',
     ],
     choices: [{ label: '重来第四章', href: '/scenes/scenechapter4_start' }],
+    source: 'https://edu.people.com.cn/n/2013/0521/c1053-21551005.html',
+    keywords: '男童 幼教暴力 监管责任',
   },
   endingchapter4_privacybackfire: {
     id: 'endingchapter4_privacybackfire',
@@ -1022,6 +1060,8 @@ export const endingMap: Record<string, StoryNode> = {
       '原本的保护目标被舆论流量稀释。',
     ],
     choices: [{ label: '重来第四章', href: '/scenes/scenechapter4_start' }],
+    source: 'https://www.thepaper.cn/newsDetail_forward_8226820',
+    keywords: '未成年人 隐私 传播 二次伤害',
   },
   endingchapter4_protectwin: {
     id: 'endingchapter4_protectwin',
@@ -1033,6 +1073,8 @@ export const endingMap: Record<string, StoryNode> = {
       '你终于把个人经验转化为可复用的家庭安全流程。',
     ],
     choices: [{ label: '回到首页', href: '/' }],
+    source: 'https://www.chinanews.com.cn/sh/2020/07-18/9242545.shtml',
+    keywords: '男童保护 联合报备 隐私优先',
   },
 };
 
