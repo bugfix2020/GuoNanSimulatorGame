@@ -175,6 +175,322 @@ export const sceneMap: Record<string, StoryNode> = {
       { label: '都不接', href: '/scenes/sceneparking' },
     ],
   },
+
+  // 第二章：证据窗口
+  scenechapter2_meeting: {
+    id: 'scenechapter2_meeting',
+    kind: 'scene',
+    title: '国男大冒险·第二章',
+    body: [
+      '你离开上一段婚姻纠纷后，换了城市和工作，努力把生活拉回正轨。',
+      '一次客户会后，有人拍了你并配文“疑似偷拍男”发到本地群，视频开始扩散。你决定：',
+    ],
+    choices: [
+      { label: '当场追上去争辩', href: '/scenes/scenechapter2_confront' },
+      { label: '先调取会议与门禁记录', href: '/scenes/scenechapter2_collect' },
+    ],
+  },
+  scenechapter2_confront: {
+    id: 'scenechapter2_confront',
+    kind: 'scene',
+    title: '国男大冒险·第二章',
+    body: [
+      '你追到电梯口要求删帖，对方删了原视频，但转发截图已经扩散。',
+      '围观者开始二次录制，你准备：',
+    ],
+    choices: [
+      { label: '继续在线上逐条回怼', href: '/scenes/scenechapter2_spiral' },
+      { label: '停止争吵并报警备案', href: '/scenes/scenechapter2_filing' },
+    ],
+  },
+  scenechapter2_collect: {
+    id: 'scenechapter2_collect',
+    kind: 'scene',
+    title: '国男大冒险·第二章',
+    body: [
+      '你从公司拿到了会议签到和门禁时间，能证明自己在关键时段并无嫌疑行为。',
+      '你下一步要：',
+    ],
+    choices: [
+      { label: '马上发长文自证', href: '/scenes/scenechapter2_hastyproof' },
+      { label: '先让律师统一对外发声', href: '/scenes/scenechapter2_lawyerwindow' },
+    ],
+  },
+  scenechapter2_spiral: {
+    id: 'scenechapter2_spiral',
+    kind: 'scene',
+    title: '国男大冒险·第二章',
+    body: [
+      '你越解释越被截取片段，讨论焦点从事实变成了“态度问题”。',
+      '客户开始观望，你决定：',
+    ],
+    choices: [
+      { label: '删号沉默，等待降温', href: '/endings/endingchapter2_boomerang' },
+      { label: '转线下维权并整理证据链', href: '/scenes/scenechapter2_evidencepack' },
+    ],
+  },
+  scenechapter2_filing: {
+    id: 'scenechapter2_filing',
+    kind: 'scene',
+    title: '国男大冒险·第二章',
+    body: [
+      '警方受理了你的线索登记，提示你固定“原帖-转帖-评论”链路。',
+      '你要不要同步引入组织支持：',
+    ],
+    choices: [
+      { label: '联系公司法务并申请说明', href: '/scenes/scenechapter2_orgsupport' },
+      { label: '只做个人处理', href: '/scenes/scenechapter2_solo' },
+    ],
+  },
+  scenechapter2_hastyproof: {
+    id: 'scenechapter2_hastyproof',
+    kind: 'scene',
+    title: '国男大冒险·第二章',
+    body: [
+      '你抢先发布了监控截图，却误把无关路人画面也带了出去。',
+      '舆论开始质疑你“二次泄露隐私”，你决定：',
+    ],
+    choices: [
+      { label: '撤图道歉并改走律师发布', href: '/scenes/scenechapter2_recover' },
+      { label: '坚持不删继续辩解', href: '/endings/endingchapter2_overproof' },
+    ],
+  },
+  scenechapter2_lawyerwindow: {
+    id: 'scenechapter2_lawyerwindow',
+    kind: 'scene',
+    title: '国男大冒险·第二章',
+    body: [
+      '律师函发出后，对方删除了主要内容并私信道歉，但不愿公开澄清。',
+      '你的选择是：',
+    ],
+    choices: [
+      { label: '接受私下和解并签不再传播承诺', href: '/endings/endingchapter2_limitedloss' },
+      { label: '坚持公开澄清并保留起诉', href: '/scenes/scenechapter2_publicclarify' },
+    ],
+  },
+  scenechapter2_evidencepack: {
+    id: 'scenechapter2_evidencepack',
+    kind: 'scene',
+    title: '国男大冒险·第二章',
+    body: [
+      '你完成了证据包，确认存在首发账号和多个高传播账号。',
+      '你准备如何起诉：',
+    ],
+    choices: [
+      { label: '先起诉首发账号', href: '/endings/endingchapter2_singlewin' },
+      { label: '首发与高传播账号一并追责', href: '/endings/endingchapter2_fullclean' },
+    ],
+  },
+  scenechapter2_orgsupport: {
+    id: 'scenechapter2_orgsupport',
+    kind: 'scene',
+    title: '国男大冒险·第二章',
+    body: [
+      '公司发布了事实说明并提供考勤佐证，客户沟通逐步恢复。',
+      '你决定后续路径：',
+    ],
+    choices: [
+      { label: '公司联动平台投诉侵权内容', href: '/endings/endingchapter2_comeback' },
+      { label: '个人继续推进公开澄清', href: '/scenes/scenechapter2_publicclarify' },
+    ],
+  },
+  scenechapter2_solo: {
+    id: 'scenechapter2_solo',
+    kind: 'scene',
+    title: '国男大冒险·第二章',
+    body: [
+      '你单兵应对，发声频率很高，但外界始终质疑“自说自话”。',
+      '你需要在状态和节奏之间做选择：',
+    ],
+    choices: [
+      { label: '先暂停社媒并做心理恢复', href: '/endings/endingchapter2_rebuild' },
+      { label: '继续高频回应所有评论', href: '/endings/endingchapter2_boomerang' },
+    ],
+  },
+  scenechapter2_recover: {
+    id: 'scenechapter2_recover',
+    kind: 'scene',
+    title: '国男大冒险·第二章',
+    body: [
+      '你撤图后由律师发布不含隐私的时间轴声明，舆情明显回落。',
+      '下一步你要：',
+    ],
+    choices: [
+      { label: '继续平台投诉和法律追责', href: '/endings/endingchapter2_comeback' },
+      { label: '到此止步，换取生活恢复', href: '/endings/endingchapter2_limitedloss' },
+    ],
+  },
+  scenechapter2_publicclarify: {
+    id: 'scenechapter2_publicclarify',
+    kind: 'scene',
+    title: '国男大冒险·第二章',
+    body: [
+      '对方愿意发“误会说明”，但措辞模糊，不肯写明“无偷拍证据”。',
+      '你决定：',
+    ],
+    choices: [
+      { label: '接受模糊澄清，优先止损', href: '/endings/endingchapter2_limitedloss' },
+      { label: '拒绝模糊文本，进入诉讼确认', href: '/endings/endingchapter2_fullclean' },
+    ],
+  },
+
+  // 第三章：婚恋财产安全线
+  scenechapter3_start: {
+    id: 'scenechapter3_start',
+    kind: 'scene',
+    title: '国男大冒险·第三章',
+    body: [
+      '风波平息后，你重建了生活节奏，朋友介绍你认识了一位相亲对象。',
+      '关系升温很快，你决定：',
+    ],
+    choices: [
+      { label: '先做基础信息核验', href: '/scenes/scenechapter3_verify' },
+      { label: '不想多想，快速推进关系', href: '/scenes/scenechapter3_fasttrack' },
+    ],
+  },
+  scenechapter3_verify: {
+    id: 'scenechapter3_verify',
+    kind: 'scene',
+    title: '国男大冒险·第三章',
+    body: [
+      '你核对后发现对方履历时间线有几处冲突。',
+      '你打算：',
+    ],
+    choices: [
+      { label: '直接提出疑问', href: '/scenes/scenechapter3_askdirect' },
+      { label: '先记录证据再观察', href: '/scenes/scenechapter3_keepnote' },
+    ],
+  },
+  scenechapter3_fasttrack: {
+    id: 'scenechapter3_fasttrack',
+    kind: 'scene',
+    title: '国男大冒险·第三章',
+    body: [
+      '刚确定关系，对方就提出“家里急用钱”，希望你先转一笔。',
+      '你选择：',
+    ],
+    choices: [
+      { label: '先转账救急', href: '/scenes/scenechapter3_transfer' },
+      { label: '只走可追溯的正规支付', href: '/scenes/scenechapter3_formalpay' },
+    ],
+  },
+  scenechapter3_askdirect: {
+    id: 'scenechapter3_askdirect',
+    kind: 'scene',
+    title: '国男大冒险·第三章',
+    body: [
+      '对方解释称“过去婚约没走完，不算问题”，并催你尽快见家长谈彩礼。',
+      '你准备：',
+    ],
+    choices: [
+      { label: '继续推进关系', href: '/scenes/scenechapter3_upgrade' },
+      { label: '先咨询律师再决定', href: '/scenes/scenechapter3_lawcheck' },
+    ],
+  },
+  scenechapter3_keepnote: {
+    id: 'scenechapter3_keepnote',
+    kind: 'scene',
+    title: '国男大冒险·第三章',
+    body: [
+      '你保留了关键聊天与转账请求记录，对方则进一步催促订婚并给出大额清单。',
+      '你选择：',
+    ],
+    choices: [
+      { label: '答应快速订婚', href: '/scenes/scenechapter3_quickengage' },
+      { label: '坚持放慢节奏并核验家庭信息', href: '/scenes/scenechapter3_slowdown' },
+    ],
+  },
+  scenechapter3_transfer: {
+    id: 'scenechapter3_transfer',
+    kind: 'scene',
+    title: '国男大冒险·第三章',
+    body: [
+      '首笔转账后，对方继续以“手续费、改口费、保证金”追加要钱。',
+      '你决定：',
+    ],
+    choices: [
+      { label: '继续转账维持关系', href: '/endings/endingchapter3_chainloss' },
+      { label: '停止转账并整理证据', href: '/scenes/scenechapter3_stopandcollect' },
+    ],
+  },
+  scenechapter3_formalpay: {
+    id: 'scenechapter3_formalpay',
+    kind: 'scene',
+    title: '国男大冒险·第三章',
+    body: [
+      '你提出走正规支付与凭证流程，对方明显抗拒并频繁改口。',
+      '你打算：',
+    ],
+    choices: [
+      { label: '当场撕破脸公开质问', href: '/endings/endingchapter3_backfire' },
+      { label: '继续留痕并推进报备', href: '/scenes/scenechapter3_stopandcollect' },
+    ],
+  },
+  scenechapter3_upgrade: {
+    id: 'scenechapter3_upgrade',
+    kind: 'scene',
+    title: '国男大冒险·第三章',
+    body: [
+      '关系继续推进后，对方提出购买“婚介升级服务包”，称交钱才能尽快领证。',
+      '你的选择是：',
+    ],
+    choices: [
+      { label: '付款换进度', href: '/endings/endingchapter3_servicepit' },
+      { label: '拒绝并改走民事维权路径', href: '/endings/endingchapter3_civilrecover' },
+    ],
+  },
+  scenechapter3_lawcheck: {
+    id: 'scenechapter3_lawcheck',
+    kind: 'scene',
+    title: '国男大冒险·第三章',
+    body: [
+      '律师建议采用“分阶段承诺+分阶段给付+关键事实书面确认”的风控方案。',
+      '你决定：',
+    ],
+    choices: [
+      { label: '嫌麻烦，直接结束关系', href: '/endings/endingchapter3_quitintime' },
+      { label: '按风控方案推进并保留报备', href: '/endings/endingchapter3_proceduralwin' },
+    ],
+  },
+  scenechapter3_quickengage: {
+    id: 'scenechapter3_quickengage',
+    kind: 'scene',
+    title: '国男大冒险·第三章',
+    body: [
+      '快速订婚后，对方很快提出分开并拒绝返还大额给付。',
+      '你准备：',
+    ],
+    choices: [
+      { label: '提起民事返还诉求', href: '/endings/endingchapter3_civilrecover' },
+      { label: '认亏止损，避免继续消耗', href: '/endings/endingchapter3_sunkcost' },
+    ],
+  },
+  scenechapter3_slowdown: {
+    id: 'scenechapter3_slowdown',
+    kind: 'scene',
+    title: '国男大冒险·第三章',
+    body: [
+      '你提出放慢节奏后，对方家属轮番施压，要求你“别斤斤计较，先给钱再说”。',
+      '你决定：',
+    ],
+    choices: [
+      { label: '顾全面子继续投入', href: '/endings/endingchapter3_sunkcost' },
+      { label: '终止关系并进入程序化处理', href: '/endings/endingchapter3_proceduralwin' },
+    ],
+  },
+  scenechapter3_stopandcollect: {
+    id: 'scenechapter3_stopandcollect',
+    kind: 'scene',
+    title: '国男大冒险·第三章',
+    body: [
+      '你停止转账后，对方以“曝光你”“让你社死”进行威胁。',
+      '你选择：',
+    ],
+    choices: [
+      { label: '私下再给一笔封口费', href: '/endings/endingchapter3_sunkcost' },
+      { label: '报警报备并进行平台投诉', href: '/endings/endingchapter3_proceduralwin' },
+    ],
+  },
 };
 
 export const endingMap: Record<string, StoryNode> = {
@@ -307,7 +623,7 @@ export const endingMap: Record<string, StoryNode> = {
       '你表示此事绝无回旋余地，对岳父闭门不见，他离去时你从窗户看到他带着刀，暗自庆幸。',
       '恭喜你已通关当前版本，本游戏中所有结局，除“同道中人”不确定是否有真实案例外，均根据真实事件改编，如有雷同，刻意为之。',
     ],
-    choices: [],
+    choices: [{ label: '进入第二章：证据窗口', href: '/scenes/scenechapter2_meeting' }],
     note: '终局页面原版没有“如果能重来”按钮，这里保留该处理。',
   },
   endingawayout: {
@@ -335,6 +651,164 @@ export const endingMap: Record<string, StoryNode> = {
     choices: [{ label: '如果能重来......', href: '/' }],
     source: 'https://weibo.com/2628314830/KxZ8Hcdje',
     keywords: '湖南一女子乘出租车拿刀刺司机',
+  },
+
+  // 第二章：证据窗口
+  endingchapter2_boomerang: {
+    id: 'endingchapter2_boomerang',
+    kind: 'ending',
+    title: '国男大冒险·第二章',
+    endingTitle: '回旋镖',
+    body: [
+      '你把大量精力投入情绪对线，舆论焦点从“事实”转向“态度”，合作机会持续流失。',
+      '你意识到：没有证据节奏，声音越大不代表越有效。',
+    ],
+    choices: [{ label: '重来第二章', href: '/scenes/scenechapter2_meeting' }],
+  },
+  endingchapter2_overproof: {
+    id: 'endingchapter2_overproof',
+    kind: 'ending',
+    title: '国男大冒险·第二章',
+    endingTitle: '自证越界',
+    body: [
+      '你坚持使用不合规素材自证，反而新增隐私争议，让自己陷入双重被动。',
+      '原本可控的名誉纠纷，变成了更复杂的合规风险。',
+    ],
+    choices: [{ label: '重来第二章', href: '/scenes/scenechapter2_meeting' }],
+  },
+  endingchapter2_limitedloss: {
+    id: 'endingchapter2_limitedloss',
+    kind: 'ending',
+    title: '国男大冒险·第二章',
+    endingTitle: '有限止损',
+    body: [
+      '你接受了删除与私下承诺，扩散被压住，生活秩序逐步恢复。',
+      '但公开层面的澄清仍有灰度，后续仍需谨慎管理舆情。',
+    ],
+    choices: [{ label: '重来第二章', href: '/scenes/scenechapter2_meeting' }],
+  },
+  endingchapter2_singlewin: {
+    id: 'endingchapter2_singlewin',
+    kind: 'ending',
+    title: '国男大冒险·第二章',
+    endingTitle: '单点胜诉',
+    body: [
+      '你先追首发账号，成本可控、回款明确，但传播面清理有限。',
+      '这是“低风险、低覆盖”的典型维权结果。',
+    ],
+    choices: [{ label: '重来第二章', href: '/scenes/scenechapter2_meeting' }],
+  },
+  endingchapter2_fullclean: {
+    id: 'endingchapter2_fullclean',
+    kind: 'ending',
+    title: '国男大冒险·第二章',
+    endingTitle: '系统清理',
+    body: [
+      '你对首发和高传播账号并行追责，周期更长，但清理面更完整。',
+      '名誉修复慢一些，却更稳定。',
+    ],
+    choices: [{ label: '重来第二章', href: '/scenes/scenechapter2_meeting' }],
+  },
+  endingchapter2_comeback: {
+    id: 'endingchapter2_comeback',
+    kind: 'ending',
+    title: '国男大冒险·第二章',
+    endingTitle: '程序性翻盘',
+    body: [
+      '你建立了“证据保全 + 组织背书 + 法律节奏”的闭环，客户关系恢复最快。',
+      '你决定把这套方法带进下一段生活议题。',
+    ],
+    choices: [{ label: '进入第三章：婚恋财产安全', href: '/scenes/scenechapter3_start' }],
+  },
+  endingchapter2_rebuild: {
+    id: 'endingchapter2_rebuild',
+    kind: 'ending',
+    title: '国男大冒险·第二章',
+    endingTitle: '恢复优先',
+    body: [
+      '你先修复情绪和睡眠，再回到维权流程，整体损耗明显下降。',
+      '虽然短期名誉修复较慢，但你保住了长期行动能力。',
+    ],
+    choices: [{ label: '重来第二章', href: '/scenes/scenechapter2_meeting' }],
+  },
+
+  // 第三章：婚恋财产安全线
+  endingchapter3_chainloss: {
+    id: 'endingchapter3_chainloss',
+    kind: 'ending',
+    title: '国男大冒险·第三章',
+    endingTitle: '连环转账',
+    body: [
+      '你在“再转一次就能结婚”的话术中不断加码，最终只剩流水和空承诺。',
+      '当你回头时，关系和钱都已失控。',
+    ],
+    choices: [{ label: '重来第三章', href: '/scenes/scenechapter3_start' }],
+  },
+  endingchapter3_backfire: {
+    id: 'endingchapter3_backfire',
+    kind: 'ending',
+    title: '国男大冒险·第三章',
+    endingTitle: '当场翻车',
+    body: [
+      '你选择公开撕扯，对方把冲突片段发到社交平台，事件再度偏离事实主线。',
+      '你在情绪战里消耗了本该用于维权的时间窗口。',
+    ],
+    choices: [{ label: '重来第三章', href: '/scenes/scenechapter3_start' }],
+  },
+  endingchapter3_servicepit: {
+    id: 'endingchapter3_servicepit',
+    kind: 'ending',
+    title: '国男大冒险·第三章',
+    endingTitle: '焦虑付费',
+    body: [
+      '你为“升级服务”付费后，新的收费名目不断出现。',
+      '关系被包装成流程，流程只服务于继续收款。',
+    ],
+    choices: [{ label: '重来第三章', href: '/scenes/scenechapter3_start' }],
+  },
+  endingchapter3_quitintime: {
+    id: 'endingchapter3_quitintime',
+    kind: 'ending',
+    title: '国男大冒险·第三章',
+    endingTitle: '及时止损',
+    body: [
+      '你在风险放大前终止关系，代价可控，生活节奏得以保全。',
+      '这不是失败，而是把损失锁在可承受区间。',
+    ],
+    choices: [{ label: '重来第三章', href: '/scenes/scenechapter3_start' }],
+  },
+  endingchapter3_civilrecover: {
+    id: 'endingchapter3_civilrecover',
+    kind: 'ending',
+    title: '国男大冒险·第三章',
+    endingTitle: '民事追偿',
+    body: [
+      '你走上民事返还路径，虽然耗时，但部分损失有机会被追回。',
+      '程序成本不低，却比无序消耗更可控。',
+    ],
+    choices: [{ label: '重来第三章', href: '/scenes/scenechapter3_start' }],
+  },
+  endingchapter3_sunkcost: {
+    id: 'endingchapter3_sunkcost',
+    kind: 'ending',
+    title: '国男大冒险·第三章',
+    endingTitle: '沉没成本',
+    body: [
+      '你为了“已经投入这么多”继续投入，结果只把亏损推向更大。',
+      '真正的拐点本来就在第一次违和感出现时。',
+    ],
+    choices: [{ label: '重来第三章', href: '/scenes/scenechapter3_start' }],
+  },
+  endingchapter3_proceduralwin: {
+    id: 'endingchapter3_proceduralwin',
+    kind: 'ending',
+    title: '国男大冒险·第三章',
+    endingTitle: '程序化反制',
+    body: [
+      '你坚持留痕、分阶段给付、及时报备，把主动权从情绪场拉回证据场。',
+      '不是每段关系都能继续，但你终于掌握了可复制的自我保护机制。',
+    ],
+    choices: [{ label: '回到首页', href: '/' }],
   },
 };
 
