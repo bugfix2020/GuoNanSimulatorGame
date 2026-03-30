@@ -19,7 +19,7 @@ import { useMemo, useState } from 'react';
 import { usePlayerProfile } from '@/components/player-profile-provider';
 import {
   MBTI_QUIZ_QUESTIONS,
-  MBTI_REFERENCE_LINKS,
+  MBTI_REFERENCE_NOTES,
   MBTI_TYPES,
   type MbtiCode,
 } from '@/lib/player-profile';
@@ -218,18 +218,26 @@ export function HomeView({ story }: HomeViewProps) {
 
                   <div className='flex flex-wrap gap-3'>
                     <Button onClick={clearProfile}>清空设定</Button>
-                    <Text className='text-xs text-[#7b5748]'>
-                      参考：
-                      <a
-                        href={MBTI_REFERENCE_LINKS[0]}
-                        target='_blank'
-                        rel='noreferrer'
-                        className='ml-1 underline'
-                      >
-                        MBTI 四维说明
-                      </a>
-                    </Text>
                   </div>
+
+                  <Card
+                    className='rounded-[16px] border-0 bg-[#f9efe0]'
+                    styles={{ body: { padding: 12 } }}
+                  >
+                    <div className='flex flex-col gap-1 text-xs text-[#6f4a3b]'>
+                      <Text strong className='!text-inherit'>
+                        测试题依据（内置说明）
+                      </Text>
+                      {MBTI_REFERENCE_NOTES.map((note) => (
+                        <Paragraph
+                          key={note}
+                          className='!mb-0 !text-inherit'
+                        >
+                          - {note}
+                        </Paragraph>
+                      ))}
+                    </div>
+                  </Card>
                 </div>
               </Card>
 

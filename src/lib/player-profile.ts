@@ -45,9 +45,12 @@ export type MbtiQuizQuestion = {
   };
 };
 
-export const MBTI_REFERENCE_LINKS = [
-  'https://www.104.com.tw/area/office/article/detail/61964',
-  'https://hk.news.yahoo.com/mbti-16%E5%9E%8B%E4%BA%BA%E6%A0%BC%E6%B8%AC%E8%A9%A6%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F%E3%80%8C%E5%BF%AB%E6%B8%AC%E9%A1%8C%E3%80%8D%E6%B8%AC%E5%87%BA%E9%9A%B1%E8%97%8F%E5%80%8B%E6%80%A7%E3%80%81%E5%88%86%E6%B8%854%E5%A4%A7%E7%B6%AD%E5%BA%A6%E3%80%81%E5%90%84%E9%A1%9E%E5%9E%8B%E4%BA%BA%E6%A0%BC%E7%B0%A1%E4%BB%8B%E5%88%86%E6%9E%90-081031747.html',
+export const MBTI_REFERENCE_NOTES = [
+  '维度 E/I：偏外向互动还是偏内向反思。',
+  '维度 S/N：偏具体事实还是偏抽象可能。',
+  '维度 T/F：偏逻辑评估还是偏情感衡量。',
+  '维度 J/P：偏计划执行还是偏弹性探索。',
+  '题目为公开四维解释的改写版，用于游戏叙事角色初始化。',
 ];
 
 export const MBTI_TYPES: MbtiCode[] = [
