@@ -43,6 +43,7 @@ import {
   recordRouteVisit,
   type AchievementCategoryId,
   type AchievementDefinition,
+  type AchievementGrade,
   type AchievementProgressState,
 } from '@/lib/achievements';
 
@@ -113,7 +114,7 @@ function ToastStack({
   }, [items, onDone]);
 
   return (
-    <div className='pointer-events-none fixed right-4 top-4 z-[70] flex w-[min(92vw,360px)] flex-col gap-3'>
+    <div className='pointer-events-none fixed right-4 top-4 z-70 flex w-[min(92vw,360px)] flex-col gap-3'>
       <AnimatePresence>
         {items.map((item) => {
           const meta = gradeMeta[item.grade];
@@ -154,6 +155,126 @@ function ToastStack({
                   </div>
                 </div>
               </Card>
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+type UnlockEffectItem = {
+  id: string;
+  title: string;
+  grade: AchievementGrade;
+};
+
+function UnlockEffectLayer({
+  items,
+  onDone,
+}: {
+  items: UnlockEffectItem[];
+  onDone: (id: string) => void;
+}) {
+  useEffect(() => {
+    if (items.length === 0) return;
+
+    const timers = items.map((item) =>
+      window.setTimeout(() => {
+        onDone(item.id);
+      }, 1300)
+    );
+
+    return () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+    };
+  }, [items, onDone]);
+
+  const gradeColorMap: Record<
+    AchievementGrade,
+    { glow: string; particle: string; ring: string }
+  > = {
+    jia: {
+      glow: 'rgba(255, 209, 102, 0.36)',
+      particle: '#ffd166',
+      ring: '#ffecbf',
+    },
+    yi: {
+      glow: 'rgba(255, 145, 102, 0.34)',
+      particle: '#ff9166',
+      ring: '#ffd5c2',
+    },
+    bing: {
+      glow: 'rgba(173, 189, 223, 0.32)',
+      particle: '#c9d5f2',
+      ring: '#edf2ff',
+    },
+  };
+
+  return (
+    <div className='pointer-events-none fixed inset-0 z-68'>
+      <AnimatePresence>
+        {items.map((item) => {
+          const color = gradeColorMap[item.grade];
+
+          return (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className='absolute inset-0'
+            >
+              <motion.div
+                initial={{ scale: 0.3, opacity: 0 }}
+                animate={{ scale: 1.8, opacity: 0 }}
+                transition={{ duration: 1.05, ease: 'easeOut' }}
+                className='absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full'
+                style={{
+                  background: color.glow,
+                  boxShadow: `0 0 90px ${color.glow}`,
+                }}
+              />
+
+              <motion.div
+                initial={{ scale: 0.2, opacity: 0.95 }}
+                animate={{ scale: 2.3, opacity: 0 }}
+                transition={{ duration: 1, ease: 'easeOut' }}
+                className='absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full border'
+                style={{ borderColor: color.ring }}
+              />
+
+              {Array.from({ length: 14 }).map((_, index) => {
+                const angle = (Math.PI * 2 * index) / 14;
+                const radius = 80 + (index % 3) * 36;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+
+                return (
+                  <motion.span
+                    key={`${item.id}-${index}`}
+                    initial={{ x: 0, y: 0, opacity: 1, scale: 0.9 }}
+                    animate={{ x, y, opacity: 0, scale: 0.2 }}
+                    transition={{ duration: 1.05, ease: 'easeOut' }}
+                    className='absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full'
+                    style={{
+                      background: color.particle,
+                      boxShadow: `0 0 14px ${color.particle}`,
+                    }}
+                  />
+                );
+              })}
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: -6 }}
+                exit={{ opacity: 0, y: -18 }}
+                transition={{ duration: 0.55, ease: 'easeOut' }}
+                className='absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-7 rounded-full px-4 py-1.5 text-xs tracking-[0.2em] text-[#fff7ef]'
+                style={{ background: 'rgba(32, 18, 12, 0.72)' }}
+              >
+                {item.title}
+              </motion.div>
             </motion.div>
           );
         })}
@@ -683,6 +804,7 @@ export function AchievementSystemProvider({
   );
   const [hydrated, setHydrated] = useState(false);
   const [toastIds, setToastIds] = useState<string[]>([]);
+  const [effectItems, setEffectItems] = useState<UnlockEffectItem[]>([]);
   const lastTrackedPathRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -732,6 +854,14 @@ export function AchievementSystemProvider({
             .filter((id) => !currentSet.has(id));
           return [...current, ...newIds];
         });
+        setEffectItems((current) => [
+          ...current,
+          ...nextUnlocked.map((item) => ({
+            id: `${item.id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+            title: item.title,
+            grade: item.grade,
+          })),
+        ]);
       }
 
       return next;
@@ -760,6 +890,7 @@ export function AchievementSystemProvider({
         setProgress(fresh);
         window.localStorage.setItem(STORAGE_KEY, JSON.stringify(fresh));
         setToastIds([]);
+        setEffectItems([]);
         lastTrackedPathRef.current = pathname ?? null;
       },
       debugUnlockAchievement: () => {
@@ -786,6 +917,14 @@ export function AchievementSystemProvider({
                 .filter((id) => !currentSet.has(id));
               return [...current, ...newIds];
             });
+            setEffectItems((current) => [
+              ...current,
+              ...nextUnlocked.map((item) => ({
+                id: `${item.id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+                title: item.title,
+                grade: item.grade,
+              })),
+            ]);
           }
 
           return next;
@@ -803,6 +942,12 @@ export function AchievementSystemProvider({
         items={toastItems}
         onDone={(id) =>
           setToastIds((current) => current.filter((item) => item !== id))
+        }
+      />
+      <UnlockEffectLayer
+        items={effectItems}
+        onDone={(id) =>
+          setEffectItems((current) => current.filter((item) => item.id !== id))
         }
       />
     </AchievementContext.Provider>
