@@ -44,7 +44,7 @@ export function HomeView({ story }: HomeViewProps) {
   const [manualMbti, setManualMbti] = useState<MbtiCode>('INTJ');
   const [quizAnswers, setQuizAnswers] = useState<Record<string, 'A' | 'B'>>({});
   const [quizResult, setQuizResult] = useState<MbtiCode | null>(null);
-  const [quizModalOpen, setQuizModalOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
 
   const canSubmitQuiz = useMemo(
     () => MBTI_QUIZ_QUESTIONS.every((question) => !!quizAnswers[question.id]),
@@ -98,133 +98,31 @@ export function HomeView({ story }: HomeViewProps) {
                 ))}
               </div>
 
-              <Card className='rounded-[24px] border-0 bg-[#fff7ec]'>
-                <div className='flex flex-col gap-4'>
-                  <div className='flex flex-wrap items-center justify-between gap-3'>
-                    <Text className='text-sm uppercase tracking-[0.32em] text-[#8a5a45]'>
-                      人格与初始属性
-                    </Text>
-                    {profile ? (
-                      <Tag color='success'>已设定 {profile.mbti}</Tag>
-                    ) : (
-                      <Tag color='warning'>未设定</Tag>
-                    )}
-                  </div>
-
-                  <Segmented
-                    block
-                    value={entryMode}
-                    options={[
-                      { label: '直接选择 MBTI', value: 'manual' },
-                      { label: '完成测试题', value: 'quiz' },
-                    ]}
-                    onChange={(value) => setEntryMode(value as 'manual' | 'quiz')}
+              <div className='flex flex-wrap items-center gap-3'>
+                {profile ? (
+                  <Alert
+                    type='success'
+                    showIcon
+                    className='!m-0'
+                    message={`人格已设定：${profile.mbti}`}
+                    description='属性将影响部分关键分支选项。'
                   />
-
-                  {entryMode === 'manual' ? (
-                    <div className='flex flex-col gap-3'>
-                      <Select
-                        value={manualMbti}
-                        onChange={(value) => setManualMbti(value as MbtiCode)}
-                        options={MBTI_TYPES.map((type) => ({
-                          value: type,
-                          label: type,
-                        }))}
-                      />
-                      <Button
-                        type='primary'
-                        onClick={() => {
-                          setProfileByMbti(manualMbti);
-                          setQuizResult(manualMbti);
-                        }}
-                      >
-                        应用 MBTI 与属性
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className='flex flex-col gap-4'>
-                      <Alert
-                        type='info'
-                        showIcon
-                        message='测试题采用弹窗答题，避免首页被挤压。'
-                        description={`当前进度：${Object.keys(quizAnswers).length} / ${MBTI_QUIZ_QUESTIONS.length}`}
-                      />
-                      <Button onClick={() => setQuizModalOpen(true)}>
-                        打开测试题
-                      </Button>
-                      <Button
-                        type='primary'
-                        disabled={!canSubmitQuiz}
-                        onClick={() => {
-                          const mbti = setProfileByQuizAnswers(quizAnswers);
-                          setQuizResult(mbti);
-                        }}
-                      >
-                        提交测试并生成属性
-                      </Button>
-                    </div>
-                  )}
-
-                  {quizResult ? (
-                    <Alert
-                      type='success'
-                      showIcon
-                      message={`当前人格：${quizResult}`}
-                      description='属性会影响部分关键选项，属性不足时会被锁定。'
-                    />
-                  ) : null}
-
-                  {profile ? (
-                    <div className='grid gap-2 sm:grid-cols-2'>
-                      {[
-                        { key: 'force', label: '武力' },
-                        { key: 'intelligence', label: '智力' },
-                        { key: 'tenacity', label: '坚韧' },
-                        { key: 'compassion', label: '怜悯' },
-                        { key: 'apathy', label: '冷漠' },
-                      ].map((item) => {
-                        const value = profile.attributes[item.key as keyof typeof profile.attributes];
-                        return (
-                          <div key={item.key}>
-                            <div className='mb-1 flex items-center justify-between text-xs text-[#7a4d3b]'>
-                              <span>{item.label}</span>
-                              <span>{value}</span>
-                            </div>
-                            <Progress
-                              percent={value}
-                              showInfo={false}
-                              strokeColor='#c66d42'
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : null}
-
-                  <div className='flex flex-wrap gap-3'>
-                    <Button onClick={clearProfile}>清空设定</Button>
-                  </div>
-
-                  <Card
-                    className='rounded-[16px] border-0 bg-[#f9efe0]'
-                    styles={{ body: { padding: 12 } }}
-                  >
-                    <div className='flex flex-col gap-1 text-xs text-[#6f4a3b]'>
-                      <Text strong className='!text-inherit'>
-                        测试题依据（内置说明）
-                      </Text>
-                      {MBTI_REFERENCE_NOTES.map((note) => (
-                        <Paragraph
-                          key={note}
-                          className='!mb-0 !text-inherit'
-                        >
-                          - {note}
-                        </Paragraph>
-                      ))}
-                    </div>
-                  </Card>
-                </div>
-              </Card>
+                ) : (
+                  <Alert
+                    type='warning'
+                    showIcon
+                    className='!m-0'
+                    message='请先进行人格设定'
+                    description='点击“人格设定”按钮，通过直选或测试完成初始化。'
+                  />
+                )}
+                <Button
+                  type='primary'
+                  onClick={() => setProfileModalOpen(true)}
+                >
+                  人格设定（弹窗）
+                </Button>
+              </div>
 
               <div className='grid gap-3 sm:max-w-md'>
                 {!ready ? (
@@ -318,54 +216,149 @@ export function HomeView({ story }: HomeViewProps) {
         </Card>
 
         <Modal
-          title='MBTI 测试题'
-          open={quizModalOpen}
-          onCancel={() => setQuizModalOpen(false)}
+          title='人格与初始属性设定'
+          open={profileModalOpen}
+          onCancel={() => setProfileModalOpen(false)}
           footer={
             <div className='flex justify-end gap-2'>
-              <Button onClick={() => setQuizModalOpen(false)}>关闭</Button>
-              <Button
-                type='primary'
-                disabled={!canSubmitQuiz}
-                onClick={() => {
-                  const mbti = setProfileByQuizAnswers(quizAnswers);
-                  setQuizResult(mbti);
-                  setQuizModalOpen(false);
-                }}
-              >
-                提交并应用属性
-              </Button>
+              <Button onClick={clearProfile}>清空设定</Button>
+              <Button onClick={() => setProfileModalOpen(false)}>完成</Button>
             </div>
           }
           width={760}
           styles={{ body: { maxHeight: '70vh', overflowY: 'auto' } }}
         >
           <div className='flex flex-col gap-4'>
-            {MBTI_QUIZ_QUESTIONS.map((question) => (
-              <Card
-                key={question.id}
-                className='rounded-[16px] border-0 bg-[#fffaf2]'
-                styles={{ body: { padding: 14 } }}
-              >
-                <div className='flex flex-col gap-2'>
-                  <Text strong>{question.prompt}</Text>
-                  <Radio.Group
-                    value={quizAnswers[question.id]}
-                    onChange={(event) => {
-                      setQuizAnswers((previous) => ({
-                        ...previous,
-                        [question.id]: event.target.value,
-                      }));
+            <Segmented
+              block
+              value={entryMode}
+              options={[
+                { label: '直接选择 MBTI', value: 'manual' },
+                { label: '完成测试题', value: 'quiz' },
+              ]}
+              onChange={(value) => setEntryMode(value as 'manual' | 'quiz')}
+            />
+
+            {entryMode === 'manual' ? (
+              <Card className='rounded-[16px] border-0 bg-[#fffaf2]'>
+                <div className='flex flex-col gap-3'>
+                  <Select
+                    value={manualMbti}
+                    onChange={(value) => setManualMbti(value as MbtiCode)}
+                    options={MBTI_TYPES.map((type) => ({ value: type, label: type }))}
+                  />
+                  <Button
+                    type='primary'
+                    onClick={() => {
+                      setProfileByMbti(manualMbti);
+                      setQuizResult(manualMbti);
                     }}
                   >
-                    <div className='flex flex-col gap-2'>
-                      <Radio value='A'>{question.optionA.label}</Radio>
-                      <Radio value='B'>{question.optionB.label}</Radio>
-                    </div>
-                  </Radio.Group>
+                    应用 MBTI 与属性
+                  </Button>
                 </div>
               </Card>
-            ))}
+            ) : (
+              <div className='flex flex-col gap-4'>
+                <Alert
+                  type='info'
+                  showIcon
+                  message={`测试进度：${Object.keys(quizAnswers).length} / ${MBTI_QUIZ_QUESTIONS.length}`}
+                  description='题目依据为内置四维解释改写版。'
+                />
+                {MBTI_QUIZ_QUESTIONS.map((question) => (
+                  <Card
+                    key={question.id}
+                    className='rounded-[16px] border-0 bg-[#fffaf2]'
+                    styles={{ body: { padding: 14 } }}
+                  >
+                    <div className='flex flex-col gap-2'>
+                      <Text strong>{question.prompt}</Text>
+                      <Radio.Group
+                        value={quizAnswers[question.id]}
+                        onChange={(event) => {
+                          setQuizAnswers((previous) => ({
+                            ...previous,
+                            [question.id]: event.target.value,
+                          }));
+                        }}
+                      >
+                        <div className='flex flex-col gap-2'>
+                          <Radio value='A'>{question.optionA.label}</Radio>
+                          <Radio value='B'>{question.optionB.label}</Radio>
+                        </div>
+                      </Radio.Group>
+                    </div>
+                  </Card>
+                ))}
+                <Button
+                  type='primary'
+                  disabled={!canSubmitQuiz}
+                  onClick={() => {
+                    const mbti = setProfileByQuizAnswers(quizAnswers);
+                    setQuizResult(mbti);
+                  }}
+                >
+                  提交测试并应用属性
+                </Button>
+              </div>
+            )}
+
+            {quizResult ? (
+              <Alert
+                type='success'
+                showIcon
+                message={`当前人格：${quizResult}`}
+                description='属性会影响部分关键选项，属性不足时会被锁定。'
+              />
+            ) : null}
+
+            {profile ? (
+              <div className='grid gap-2 sm:grid-cols-2'>
+                {[
+                  { key: 'force', label: '武力' },
+                  { key: 'intelligence', label: '智力' },
+                  { key: 'tenacity', label: '坚韧' },
+                  { key: 'compassion', label: '怜悯' },
+                  { key: 'apathy', label: '冷漠' },
+                ].map((item) => {
+                  const value =
+                    profile.attributes[item.key as keyof typeof profile.attributes];
+                  return (
+                    <div key={item.key}>
+                      <div className='mb-1 flex items-center justify-between text-xs text-[#7a4d3b]'>
+                        <span>{item.label}</span>
+                        <span>{value}</span>
+                      </div>
+                      <Progress
+                        percent={value}
+                        showInfo={false}
+                        strokeColor='#c66d42'
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            ) : null}
+
+            <Card
+              className='rounded-[16px] border-0 bg-[#f9efe0]'
+              styles={{ body: { padding: 12 } }}
+            >
+              <div className='flex flex-col gap-1 text-xs text-[#6f4a3b]'>
+                <Text strong className='!text-inherit'>
+                  测试题依据（内置说明）
+                </Text>
+                {MBTI_REFERENCE_NOTES.map((note) => (
+                  <Paragraph
+                    key={note}
+                    className='!mb-0 !text-inherit'
+                  >
+                    - {note}
+                  </Paragraph>
+                ))}
+              </div>
+            </Card>
           </div>
         </Modal>
       </div>
