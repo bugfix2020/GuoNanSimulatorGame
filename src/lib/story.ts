@@ -491,6 +491,151 @@ export const sceneMap: Record<string, StoryNode> = {
       { label: '报警报备并进行平台投诉', href: '/endings/endingchapter3_proceduralwin' },
     ],
   },
+
+  // 第四章：未成年人保护与程序防线
+  scenechapter4_start: {
+    id: 'scenechapter4_start',
+    kind: 'scene',
+    title: '国男大冒险·第四章',
+    body: [
+      '你把“先留痕再发声”的习惯带回家庭生活。',
+      '一天，家中男童放学后情绪异常，提到托管机构里存在越界接触和偷拍视频传闻。你决定：',
+    ],
+    choices: [
+      { label: '先安抚并记录细节', href: '/scenes/scenechapter4_record' },
+      { label: '先在家长群公开指责', href: '/scenes/scenechapter4_publicaccuse' },
+    ],
+  },
+  scenechapter4_record: {
+    id: 'scenechapter4_record',
+    kind: 'scene',
+    title: '国男大冒险·第四章',
+    body: [
+      '你记录了时间、地点、孩子原话，并同步整理接送记录。',
+      '接下来你要：',
+    ],
+    choices: [
+      { label: '先联系其他家长交叉核验', href: '/scenes/scenechapter4_crosscheck' },
+      { label: '先私下找机构负责人', href: '/scenes/scenechapter4_privatetalk' },
+    ],
+  },
+  scenechapter4_publicaccuse: {
+    id: 'scenechapter4_publicaccuse',
+    kind: 'scene',
+    title: '国男大冒险·第四章',
+    body: [
+      '你在群里公开质疑后，讨论迅速失控，立场对立明显。',
+      '你下一步：',
+    ],
+    choices: [
+      { label: '继续发布未核实名单和截图', href: '/scenes/scenechapter4_escalate' },
+      { label: '删帖并改为征集线索', href: '/scenes/scenechapter4_collectclues' },
+    ],
+  },
+  scenechapter4_crosscheck: {
+    id: 'scenechapter4_crosscheck',
+    kind: 'scene',
+    title: '国男大冒险·第四章',
+    body: [
+      '两位家长反馈了相似异常，你们初步形成了同一时间段的疑点。',
+      '你决定：',
+    ],
+    choices: [
+      { label: '联合报备并走正式流程', href: '/scenes/scenechapter4_reportjoint' },
+      { label: '只给孩子转学，不再追究', href: '/endings/endingchapter4_withdraw' },
+    ],
+  },
+  scenechapter4_privatetalk: {
+    id: 'scenechapter4_privatetalk',
+    kind: 'scene',
+    title: '国男大冒险·第四章',
+    body: [
+      '机构负责人提出“退费+道歉”，希望你不要继续外传。',
+      '你选择：',
+    ],
+    choices: [
+      { label: '接受退费并签保密协议', href: '/endings/endingchapter4_hushmoney' },
+      { label: '拒绝封口，书面要求调取监控', href: '/scenes/scenechapter4_monitor' },
+    ],
+  },
+  scenechapter4_escalate: {
+    id: 'scenechapter4_escalate',
+    kind: 'scene',
+    title: '国男大冒险·第四章',
+    body: [
+      '你持续发布未核实信息，个别内容涉及未成年人可识别线索。',
+      '事态快速恶化。',
+    ],
+    choices: [
+      { label: '继续硬顶到底', href: '/endings/endingchapter4_reversalrisk' },
+      { label: '立即收缩并补做证据链', href: '/scenes/scenechapter4_collectclues' },
+    ],
+  },
+  scenechapter4_collectclues: {
+    id: 'scenechapter4_collectclues',
+    kind: 'scene',
+    title: '国男大冒险·第四章',
+    body: [
+      '你改为收集可核验材料，重点固定“时间线+接触场景+传播链路”。',
+      '你决定：',
+    ],
+    choices: [
+      { label: '补充专业评估后联合报备', href: '/scenes/scenechapter4_reportjoint' },
+      { label: '仅靠聊天截图继续扩散', href: '/endings/endingchapter4_weakcase' },
+    ],
+  },
+  scenechapter4_monitor: {
+    id: 'scenechapter4_monitor',
+    kind: 'scene',
+    title: '国男大冒险·第四章',
+    body: [
+      '机构只提供了部分监控，关键时段以“设备故障”解释。',
+      '你选择：',
+    ],
+    choices: [
+      { label: '申请第三方鉴定并联合报备', href: '/scenes/scenechapter4_reportjoint' },
+      { label: '接受解释，停止追查', href: '/endings/endingchapter4_weakcase' },
+    ],
+  },
+  scenechapter4_reportjoint: {
+    id: 'scenechapter4_reportjoint',
+    kind: 'scene',
+    title: '国男大冒险·第四章',
+    body: [
+      '你与其他家长按流程向相关部门报备，案件进入正式处理。',
+      '后续阶段你准备：',
+    ],
+    choices: [
+      { label: '同步法援与心理支持，统一口径', href: '/scenes/scenechapter4_legalaid' },
+      { label: '担心压力过大，中途撤回', href: '/endings/endingchapter4_withdraw' },
+    ],
+  },
+  scenechapter4_legalaid: {
+    id: 'scenechapter4_legalaid',
+    kind: 'scene',
+    title: '国男大冒险·第四章',
+    body: [
+      '法援团队建议你坚持未成年人隐私保护，并以书面材料统一对外。',
+      '你要：',
+    ],
+    choices: [
+      { label: '接受模糊和解，尽快了结', href: '/endings/endingchapter4_halfsettle' },
+      { label: '继续走程序并保护儿童信息', href: '/scenes/scenechapter4_followup' },
+    ],
+  },
+  scenechapter4_followup: {
+    id: 'scenechapter4_followup',
+    kind: 'scene',
+    title: '国男大冒险·第四章',
+    body: [
+      '多方调查逐步推进，外界关注上升。',
+      '你决定如何对外发声：',
+    ],
+    choices: [
+      { label: '坚持匿名与最小披露原则', href: '/endings/endingchapter4_protectwin' },
+      { label: '公开儿童身份细节换取关注', href: '/endings/endingchapter4_privacybackfire' },
+    ],
+  },
 };
 
 export const endingMap: Record<string, StoryNode> = {
@@ -807,6 +952,85 @@ export const endingMap: Record<string, StoryNode> = {
     body: [
       '你坚持留痕、分阶段给付、及时报备，把主动权从情绪场拉回证据场。',
       '不是每段关系都能继续，但你终于掌握了可复制的自我保护机制。',
+    ],
+    choices: [{ label: '进入第四章：未成年人保护', href: '/scenes/scenechapter4_start' }],
+  },
+
+  // 第四章：未成年人保护与程序防线
+  endingchapter4_withdraw: {
+    id: 'endingchapter4_withdraw',
+    kind: 'ending',
+    title: '国男大冒险·第四章',
+    endingTitle: '撤回之后',
+    body: [
+      '你选择了撤回，短期冲突下降，但关键事实停留在“传闻与猜测”。',
+      '你保住了平静，也失去了推动系统改进的窗口。',
+    ],
+    choices: [{ label: '重来第四章', href: '/scenes/scenechapter4_start' }],
+  },
+  endingchapter4_hushmoney: {
+    id: 'endingchapter4_hushmoney',
+    kind: 'ending',
+    title: '国男大冒险·第四章',
+    endingTitle: '退费封口',
+    body: [
+      '你接受了退费方案，事件被快速压下。',
+      '问题看似结束，但风险没有被系统性识别。',
+    ],
+    choices: [{ label: '重来第四章', href: '/scenes/scenechapter4_start' }],
+  },
+  endingchapter4_reversalrisk: {
+    id: 'endingchapter4_reversalrisk',
+    kind: 'ending',
+    title: '国男大冒险·第四章',
+    endingTitle: '反噬风险',
+    body: [
+      '你在证据不足时公开点名，反而给了对方反诉与舆论反击空间。',
+      '事实尚未澄清，自己先陷入程序被动。',
+    ],
+    choices: [{ label: '重来第四章', href: '/scenes/scenechapter4_start' }],
+  },
+  endingchapter4_weakcase: {
+    id: 'endingchapter4_weakcase',
+    kind: 'ending',
+    title: '国男大冒险·第四章',
+    endingTitle: '证据断层',
+    body: [
+      '你的线索停留在碎片截图，无法形成稳定证据链。',
+      '案件推进受阻，最终只剩各说各话。',
+    ],
+    choices: [{ label: '重来第四章', href: '/scenes/scenechapter4_start' }],
+  },
+  endingchapter4_halfsettle: {
+    id: 'endingchapter4_halfsettle',
+    kind: 'ending',
+    title: '国男大冒险·第四章',
+    endingTitle: '半程和解',
+    body: [
+      '你选择了模糊和解，冲突成本被控制，但公开结论并不明确。',
+      '这条路适合止损，不适合追求完整事实复盘。',
+    ],
+    choices: [{ label: '重来第四章', href: '/scenes/scenechapter4_start' }],
+  },
+  endingchapter4_privacybackfire: {
+    id: 'endingchapter4_privacybackfire',
+    kind: 'ending',
+    title: '国男大冒险·第四章',
+    endingTitle: '隐私反噬',
+    body: [
+      '你为了扩大关注公开了未成年人身份细节，造成二次伤害与新的合规争议。',
+      '原本的保护目标被舆论流量稀释。',
+    ],
+    choices: [{ label: '重来第四章', href: '/scenes/scenechapter4_start' }],
+  },
+  endingchapter4_protectwin: {
+    id: 'endingchapter4_protectwin',
+    kind: 'ending',
+    title: '国男大冒险·第四章',
+    endingTitle: '保护闭环',
+    body: [
+      '你坚持“最小披露+持续留痕+联合报备”，既保护了儿童隐私，也推动了实质调查。',
+      '你终于把个人经验转化为可复用的家庭安全流程。',
     ],
     choices: [{ label: '回到首页', href: '/' }],
   },
