@@ -1,6 +1,10 @@
+import type { PlayerAttributeId } from '@/lib/player-profile';
+
 export type StoryChoice = {
   label: string;
   href: string;
+  requirements?: Partial<Record<PlayerAttributeId, number>>;
+  requirementHint?: string;
 };
 
 export type StoryNode = {
@@ -213,7 +217,12 @@ export const sceneMap: Record<string, StoryNode> = {
     ],
     choices: [
       { label: '马上发长文自证并附路人截图', href: '/endings/endingchapter2_overproof' },
-      { label: '先让律师统一对外发声', href: '/scenes/scenechapter2_lawyerwindow' },
+      {
+        label: '先让律师统一对外发声',
+        href: '/scenes/scenechapter2_lawyerwindow',
+        requirements: { intelligence: 58 },
+        requirementHint: '需要更高智力：先证据后发声',
+      },
     ],
   },
   scenechapter2_spiral: {
@@ -238,7 +247,12 @@ export const sceneMap: Record<string, StoryNode> = {
       '你要不要同步引入组织支持：',
     ],
     choices: [
-      { label: '联系公司法务并申请说明', href: '/scenes/scenechapter2_orgsupport' },
+      {
+        label: '联系公司法务并申请说明',
+        href: '/scenes/scenechapter2_orgsupport',
+        requirements: { tenacity: 56 },
+        requirementHint: '需要更高坚韧：程序推进会更漫长',
+      },
       { label: '只做个人处理并继续刷屏回应', href: '/endings/endingchapter2_rebuild' },
     ],
   },
@@ -358,7 +372,12 @@ export const sceneMap: Record<string, StoryNode> = {
     ],
     choices: [
       { label: '直接公开聊天记录质问对方', href: '/endings/endingchapter3_backfire' },
-      { label: '先记录证据再观察', href: '/scenes/scenechapter3_keepnote' },
+      {
+        label: '先记录证据再观察',
+        href: '/scenes/scenechapter3_keepnote',
+        requirements: { intelligence: 60 },
+        requirementHint: '需要更高智力：先留痕再动作',
+      },
     ],
   },
   scenechapter3_fasttrack: {
@@ -397,7 +416,12 @@ export const sceneMap: Record<string, StoryNode> = {
     ],
     choices: [
       { label: '答应快速订婚', href: '/endings/endingchapter3_sunkcost' },
-      { label: '坚持放慢节奏并核验家庭信息', href: '/scenes/scenechapter3_slowdown' },
+      {
+        label: '坚持放慢节奏并核验家庭信息',
+        href: '/scenes/scenechapter3_slowdown',
+        requirements: { tenacity: 58 },
+        requirementHint: '需要更高坚韧：抗住压力再推进',
+      },
     ],
   },
   scenechapter3_transfer: {
@@ -488,7 +512,12 @@ export const sceneMap: Record<string, StoryNode> = {
     ],
     choices: [
       { label: '私下再给一笔封口费', href: '/endings/endingchapter3_sunkcost' },
-      { label: '报警报备并进行平台投诉', href: '/endings/endingchapter3_proceduralwin' },
+      {
+        label: '报警报备并进行平台投诉',
+        href: '/endings/endingchapter3_proceduralwin',
+        requirements: { tenacity: 62, compassion: 46 },
+        requirementHint: '需要坚韧与怜悯：既要坚持也要守住边界',
+      },
     ],
   },
 
@@ -515,7 +544,12 @@ export const sceneMap: Record<string, StoryNode> = {
       '接下来你要：',
     ],
     choices: [
-      { label: '先联系其他家长交叉核验', href: '/scenes/scenechapter4_crosscheck' },
+      {
+        label: '先联系其他家长交叉核验',
+        href: '/scenes/scenechapter4_crosscheck',
+        requirements: { compassion: 60 },
+        requirementHint: '需要更高怜悯：先保护孩子再推进',
+      },
       { label: '先私下找机构负责人并接受私了', href: '/endings/endingchapter4_hushmoney' },
     ],
   },
@@ -606,7 +640,12 @@ export const sceneMap: Record<string, StoryNode> = {
       '后续阶段你准备：',
     ],
     choices: [
-      { label: '同步法援与心理支持，统一口径', href: '/scenes/scenechapter4_legalaid' },
+      {
+        label: '同步法援与心理支持，统一口径',
+        href: '/scenes/scenechapter4_legalaid',
+        requirements: { intelligence: 56, compassion: 62 },
+        requirementHint: '需要智力与怜悯：程序与保护并行',
+      },
       { label: '担心压力过大，中途撤回', href: '/endings/endingchapter4_withdraw' },
     ],
   },
@@ -620,7 +659,12 @@ export const sceneMap: Record<string, StoryNode> = {
     ],
     choices: [
       { label: '接受模糊和解，尽快了结', href: '/endings/endingchapter4_halfsettle' },
-      { label: '继续走程序并保护儿童信息', href: '/scenes/scenechapter4_followup' },
+      {
+        label: '继续走程序并保护儿童信息',
+        href: '/scenes/scenechapter4_followup',
+        requirements: { tenacity: 60, compassion: 64 },
+        requirementHint: '需要坚韧与怜悯：程序推进更艰难',
+      },
     ],
   },
   scenechapter4_followup: {

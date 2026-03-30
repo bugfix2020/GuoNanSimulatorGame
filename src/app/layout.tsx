@@ -5,6 +5,7 @@ import { Noto_Serif_SC, ZCOOL_XiaoWei } from 'next/font/google';
 import React from 'react';
 import { AchievementSystemProvider } from '@/components/achievement-system';
 import AudioManagerClient from '@/components/audio-manager-client';
+import { PlayerProfileProvider } from '@/components/player-profile-provider';
 import './globals.css';
 
 const serif = Noto_Serif_SC({
@@ -52,10 +53,12 @@ export default function RootLayout({
               },
             }}
           >
-            <AchievementSystemProvider>
-              <AudioManagerClient />
-              {children}
-            </AchievementSystemProvider>
+            <PlayerProfileProvider>
+              <AchievementSystemProvider>
+                <AudioManagerClient />
+                {children}
+              </AchievementSystemProvider>
+            </PlayerProfileProvider>
           </ConfigProvider>
         </AntdRegistry>
       </body>

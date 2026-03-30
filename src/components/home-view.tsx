@@ -1,9 +1,28 @@
 'use client';
 
 import { ArrowRightOutlined, DesktopOutlined } from '@ant-design/icons';
-import { Button, Card, Divider, Tag, Typography } from 'antd';
+import {
+  Alert,
+  Button,
+  Card,
+  Divider,
+  Progress,
+  Radio,
+  Segmented,
+  Select,
+  Tag,
+  Typography,
+} from 'antd';
 import Link from 'next/link';
+import { useMemo, useState } from 'react';
 
+import { usePlayerProfile } from '@/components/player-profile-provider';
+import {
+  MBTI_QUIZ_QUESTIONS,
+  MBTI_REFERENCE_LINKS,
+  MBTI_TYPES,
+  type MbtiCode,
+} from '@/lib/player-profile';
 import type { HomeStory } from '@/lib/story';
 
 const { Paragraph, Text, Title } = Typography;
@@ -13,11 +32,30 @@ type HomeViewProps = {
 };
 
 export function HomeView({ story }: HomeViewProps) {
+  const {
+    profile,
+    ready,
+    setProfileByMbti,
+    setProfileByQuizAnswers,
+    clearProfile,
+  } = usePlayerProfile();
+  const [entryMode, setEntryMode] = useState<'manual' | 'quiz'>('manual');
+  const [manualMbti, setManualMbti] = useState<MbtiCode>('INTJ');
+  const [quizAnswers, setQuizAnswers] = useState<Record<string, 'A' | 'B'>>({});
+  const [quizResult, setQuizResult] = useState<MbtiCode | null>(null);
+
+  const canSubmitQuiz = useMemo(
+    () => MBTI_QUIZ_QUESTIONS.every((question) => !!quizAnswers[question.id]),
+    [quizAnswers]
+  );
+
+  const startLocked = !profile;
+
   return (
     <main className='game-shell flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:px-8'>
       <div className='w-full max-w-6xl'>
         <Card className='paper-panel overflow-hidden rounded-[32px] border-0'>
-          <div className='grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10'>
+          <div className='grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:gap-10'>
             <section className='flex flex-col gap-6 p-2 sm:p-4'>
               <div className='flex flex-wrap items-center gap-3'>
                 <Tag
@@ -58,13 +96,157 @@ export function HomeView({ story }: HomeViewProps) {
                 ))}
               </div>
 
+              <Card className='rounded-[24px] border-0 bg-[#fff7ec]'>
+                <div className='flex flex-col gap-4'>
+                  <div className='flex flex-wrap items-center justify-between gap-3'>
+                    <Text className='text-sm uppercase tracking-[0.32em] text-[#8a5a45]'>
+                      人格与初始属性
+                    </Text>
+                    {profile ? (
+                      <Tag color='success'>已设定 {profile.mbti}</Tag>
+                    ) : (
+                      <Tag color='warning'>未设定</Tag>
+                    )}
+                  </div>
+
+                  <Segmented
+                    block
+                    value={entryMode}
+                    options={[
+                      { label: '直接选择 MBTI', value: 'manual' },
+                      { label: '完成测试题', value: 'quiz' },
+                    ]}
+                    onChange={(value) => setEntryMode(value as 'manual' | 'quiz')}
+                  />
+
+                  {entryMode === 'manual' ? (
+                    <div className='flex flex-col gap-3'>
+                      <Select
+                        value={manualMbti}
+                        onChange={(value) => setManualMbti(value as MbtiCode)}
+                        options={MBTI_TYPES.map((type) => ({
+                          value: type,
+                          label: type,
+                        }))}
+                      />
+                      <Button
+                        type='primary'
+                        onClick={() => {
+                          setProfileByMbti(manualMbti);
+                          setQuizResult(manualMbti);
+                        }}
+                      >
+                        应用 MBTI 与属性
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className='flex flex-col gap-4'>
+                      {MBTI_QUIZ_QUESTIONS.map((question) => (
+                        <Card
+                          key={question.id}
+                          className='rounded-[16px] border-0 bg-white'
+                          styles={{ body: { padding: 14 } }}
+                        >
+                          <div className='flex flex-col gap-2'>
+                            <Text strong>{question.prompt}</Text>
+                            <Radio.Group
+                              value={quizAnswers[question.id]}
+                              onChange={(event) => {
+                                setQuizAnswers((previous) => ({
+                                  ...previous,
+                                  [question.id]: event.target.value,
+                                }));
+                              }}
+                            >
+                              <div className='flex flex-col gap-2'>
+                                <Radio value='A'>{question.optionA.label}</Radio>
+                                <Radio value='B'>{question.optionB.label}</Radio>
+                              </div>
+                            </Radio.Group>
+                          </div>
+                        </Card>
+                      ))}
+
+                      <Button
+                        type='primary'
+                        disabled={!canSubmitQuiz}
+                        onClick={() => {
+                          const mbti = setProfileByQuizAnswers(quizAnswers);
+                          setQuizResult(mbti);
+                        }}
+                      >
+                        提交测试并生成属性
+                      </Button>
+                    </div>
+                  )}
+
+                  {quizResult ? (
+                    <Alert
+                      type='success'
+                      showIcon
+                      message={`当前人格：${quizResult}`}
+                      description='属性会影响部分关键选项，属性不足时会被锁定。'
+                    />
+                  ) : null}
+
+                  {profile ? (
+                    <div className='grid gap-2 sm:grid-cols-2'>
+                      {[
+                        { key: 'force', label: '武力' },
+                        { key: 'intelligence', label: '智力' },
+                        { key: 'tenacity', label: '坚韧' },
+                        { key: 'compassion', label: '怜悯' },
+                        { key: 'apathy', label: '冷漠' },
+                      ].map((item) => {
+                        const value = profile.attributes[item.key as keyof typeof profile.attributes];
+                        return (
+                          <div key={item.key}>
+                            <div className='mb-1 flex items-center justify-between text-xs text-[#7a4d3b]'>
+                              <span>{item.label}</span>
+                              <span>{value}</span>
+                            </div>
+                            <Progress
+                              percent={value}
+                              showInfo={false}
+                              strokeColor='#c66d42'
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : null}
+
+                  <div className='flex flex-wrap gap-3'>
+                    <Button onClick={clearProfile}>清空设定</Button>
+                    <Text className='text-xs text-[#7b5748]'>
+                      参考：
+                      <a
+                        href={MBTI_REFERENCE_LINKS[0]}
+                        target='_blank'
+                        rel='noreferrer'
+                        className='ml-1 underline'
+                      >
+                        MBTI 四维说明
+                      </a>
+                    </Text>
+                  </div>
+                </div>
+              </Card>
+
               <div className='grid gap-3 sm:max-w-md'>
-                {story.choices.map((choice, index) => (
-                  <Link
-                    key={choice.href}
-                    href={choice.href}
-                    className='w-full'
+                {!ready ? (
+                  <Button
+                    size='large'
+                    block
+                    loading
+                    className='story-choice-button !rounded-2xl !text-left'
                   >
+                    读取角色设定中...
+                  </Button>
+                ) : null}
+
+                {story.choices.map((choice, index) => {
+                  const button = (
                     <Button
                       type={
                         index === story.choices.length - 1
@@ -73,13 +255,28 @@ export function HomeView({ story }: HomeViewProps) {
                       }
                       size='large'
                       block
+                      disabled={startLocked || !ready}
                       icon={<ArrowRightOutlined />}
                       className='story-choice-button !rounded-2xl !text-left'
                     >
-                      {choice.label}
+                      {startLocked ? '先完成人格设定再开始' : choice.label}
                     </Button>
-                  </Link>
-                ))}
+                  );
+
+                  if (startLocked || !ready) {
+                    return <div key={choice.href}>{button}</div>;
+                  }
+
+                  return (
+                    <Link
+                      key={choice.href}
+                      href={choice.href}
+                      className='w-full'
+                    >
+                      {button}
+                    </Link>
+                  );
+                })}
               </div>
             </section>
 

@@ -9,7 +9,9 @@ import {
 } from '@ant-design/icons';
 import { Button, Card, Divider, Tag, Typography } from 'antd';
 import Link from 'next/link';
+import { useMemo } from 'react';
 
+import { usePlayerProfile } from '@/components/player-profile-provider';
 import type { StoryNode } from '@/lib/story';
 
 const { Paragraph, Text, Title } = Typography;
@@ -20,6 +22,18 @@ type GameNodeViewProps = {
 
 export function GameNodeView({ node }: GameNodeViewProps) {
   const isEnding = node.kind === 'ending';
+  const { profile } = usePlayerProfile();
+
+  const attributeLabels = useMemo(
+    () => ({
+      force: '武力',
+      intelligence: '智力',
+      tenacity: '坚韧',
+      compassion: '怜悯',
+      apathy: '冷漠',
+    }),
+    []
+  );
 
   return (
     <main className='game-shell flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 lg:px-8'>
@@ -86,6 +100,30 @@ export function GameNodeView({ node }: GameNodeViewProps) {
               </Card>
 
               <div className='flex flex-col gap-4'>
+                {profile ? (
+                  <Card className='rounded-[26px] border-0 bg-white/85'>
+                    <div className='flex flex-col gap-3'>
+                      <div className='flex items-center justify-between'>
+                        <Text strong>当前人格</Text>
+                        <Tag color='processing'>{profile.mbti}</Tag>
+                      </div>
+                      <div className='grid grid-cols-2 gap-2 text-xs text-[#5f4034]'>
+                        {Object.entries(profile.attributes).map(([key, value]) => (
+                          <div
+                            key={key}
+                            className='flex items-center justify-between rounded-lg bg-[#f5e8d6] px-2 py-1'
+                          >
+                            <span>
+                              {attributeLabels[key as keyof typeof attributeLabels]}
+                            </span>
+                            <strong>{value}</strong>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </Card>
+                ) : null}
+
                 {isEnding && node.endingTitle ? (
                   <Card className='ending-seal rounded-[26px] border-0'>
                     <div className='flex flex-col gap-2'>
@@ -159,23 +197,65 @@ export function GameNodeView({ node }: GameNodeViewProps) {
                     ) : (
                       <ArrowRightOutlined />
                     );
+                    const requirements = choice.requirements;
+                    const requirementEntries = requirements
+                      ? Object.entries(requirements)
+                      : [];
+                    const profileReady = !!profile;
+                    const meetRequirements =
+                      requirementEntries.length === 0 ||
+                      (profileReady &&
+                        requirementEntries.every(
+                          ([key, value]) =>
+                            (profile?.attributes[
+                              key as keyof typeof profile.attributes
+                            ] ?? 0) >= (value ?? 0)
+                        ));
+
+                    const requirementText =
+                      requirementEntries.length > 0
+                        ? requirementEntries
+                            .map(
+                              ([key, value]) =>
+                                `${
+                                  attributeLabels[
+                                    key as keyof typeof attributeLabels
+                                  ]
+                                } ${value}`
+                            )
+                            .join(' / ')
+                        : '';
+
+                    const locked = !meetRequirements;
+                    const button = (
+                      <Button
+                        type={index === 0 ? 'primary' : 'default'}
+                        size='large'
+                        block
+                        disabled={locked}
+                        icon={icon}
+                        className='story-choice-button !rounded-2xl !text-left'
+                      >
+                        {choice.label}
+                      </Button>
+                    );
 
                     return (
-                      <Link
-                        key={choice.href + choice.label}
-                        href={choice.href}
-                        className='w-full'
-                      >
-                        <Button
-                          type={index === 0 ? 'primary' : 'default'}
-                          size='large'
-                          block
-                          icon={icon}
-                          className='story-choice-button !rounded-2xl !text-left'
-                        >
-                          {choice.label}
-                        </Button>
-                      </Link>
+                      <div key={choice.href + choice.label}>
+                        {locked ? (
+                          <div>{button}</div>
+                        ) : (
+                          <Link href={choice.href} className='w-full'>
+                            {button}
+                          </Link>
+                        )}
+                        {locked && requirementText ? (
+                          <Text className='mt-1 block text-xs text-[#9f2d20]'>
+                            {choice.requirementHint ?? '属性不足，无法选择'}
+                            （{requirementText}）
+                          </Text>
+                        ) : null}
+                      </div>
                     );
                   })}
                 </div>
