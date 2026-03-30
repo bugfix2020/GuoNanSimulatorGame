@@ -1,3 +1,12 @@
+# GuoNanSimulatorGame
+
+[![Downloads](https://img.shields.io/github/downloads/bugfix2020/GuoNanSimulatorGame/total?style=flat-square)](https://github.com/bugfix2020/GuoNanSimulatorGame/releases)
+[![Stars](https://img.shields.io/github/stars/bugfix2020/GuoNanSimulatorGame?style=flat-square)](https://github.com/bugfix2020/GuoNanSimulatorGame/stargazers)
+[![Forks](https://img.shields.io/github/forks/bugfix2020/GuoNanSimulatorGame?style=flat-square)](https://github.com/bugfix2020/GuoNanSimulatorGame/network/members)
+[![Issues](https://img.shields.io/github/issues/bugfix2020/GuoNanSimulatorGame?style=flat-square)](https://github.com/bugfix2020/GuoNanSimulatorGame/issues)
+[![Non-Commercial](https://img.shields.io/badge/License-Non--Commercial-red?style=flat-square)](#license)
+[![Last Commit](https://img.shields.io/github/last-commit/bugfix2020/GuoNanSimulatorGame?style=flat-square)](https://github.com/bugfix2020/GuoNanSimulatorGame/commits)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -34,3 +43,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## License
+
+This project is provided for learning and personal use only.
+Commercial use is not allowed without explicit written permission from the repository owner.
