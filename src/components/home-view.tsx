@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   Divider,
+  Modal,
   Progress,
   Radio,
   Segmented,
@@ -43,6 +44,7 @@ export function HomeView({ story }: HomeViewProps) {
   const [manualMbti, setManualMbti] = useState<MbtiCode>('INTJ');
   const [quizAnswers, setQuizAnswers] = useState<Record<string, 'A' | 'B'>>({});
   const [quizResult, setQuizResult] = useState<MbtiCode | null>(null);
+  const [quizModalOpen, setQuizModalOpen] = useState(false);
 
   const canSubmitQuiz = useMemo(
     () => MBTI_QUIZ_QUESTIONS.every((question) => !!quizAnswers[question.id]),
@@ -141,32 +143,15 @@ export function HomeView({ story }: HomeViewProps) {
                     </div>
                   ) : (
                     <div className='flex flex-col gap-4'>
-                      {MBTI_QUIZ_QUESTIONS.map((question) => (
-                        <Card
-                          key={question.id}
-                          className='rounded-[16px] border-0 bg-white'
-                          styles={{ body: { padding: 14 } }}
-                        >
-                          <div className='flex flex-col gap-2'>
-                            <Text strong>{question.prompt}</Text>
-                            <Radio.Group
-                              value={quizAnswers[question.id]}
-                              onChange={(event) => {
-                                setQuizAnswers((previous) => ({
-                                  ...previous,
-                                  [question.id]: event.target.value,
-                                }));
-                              }}
-                            >
-                              <div className='flex flex-col gap-2'>
-                                <Radio value='A'>{question.optionA.label}</Radio>
-                                <Radio value='B'>{question.optionB.label}</Radio>
-                              </div>
-                            </Radio.Group>
-                          </div>
-                        </Card>
-                      ))}
-
+                      <Alert
+                        type='info'
+                        showIcon
+                        message='测试题采用弹窗答题，避免首页被挤压。'
+                        description={`当前进度：${Object.keys(quizAnswers).length} / ${MBTI_QUIZ_QUESTIONS.length}`}
+                      />
+                      <Button onClick={() => setQuizModalOpen(true)}>
+                        打开测试题
+                      </Button>
                       <Button
                         type='primary'
                         disabled={!canSubmitQuiz}
@@ -267,7 +252,7 @@ export function HomeView({ story }: HomeViewProps) {
                       icon={<ArrowRightOutlined />}
                       className='story-choice-button !rounded-2xl !text-left'
                     >
-                      {startLocked ? '先完成人格设定再开始' : choice.label}
+                      {choice.label}
                     </Button>
                   );
 
@@ -285,6 +270,12 @@ export function HomeView({ story }: HomeViewProps) {
                     </Link>
                   );
                 })}
+
+                {startLocked ? (
+                  <Text className='text-xs text-[#9f2d20]'>
+                    请先完成人格设定，才可进入剧情分支。
+                  </Text>
+                ) : null}
               </div>
             </section>
 
@@ -325,6 +316,58 @@ export function HomeView({ story }: HomeViewProps) {
             </aside>
           </div>
         </Card>
+
+        <Modal
+          title='MBTI 测试题'
+          open={quizModalOpen}
+          onCancel={() => setQuizModalOpen(false)}
+          footer={
+            <div className='flex justify-end gap-2'>
+              <Button onClick={() => setQuizModalOpen(false)}>关闭</Button>
+              <Button
+                type='primary'
+                disabled={!canSubmitQuiz}
+                onClick={() => {
+                  const mbti = setProfileByQuizAnswers(quizAnswers);
+                  setQuizResult(mbti);
+                  setQuizModalOpen(false);
+                }}
+              >
+                提交并应用属性
+              </Button>
+            </div>
+          }
+          width={760}
+          styles={{ body: { maxHeight: '70vh', overflowY: 'auto' } }}
+        >
+          <div className='flex flex-col gap-4'>
+            {MBTI_QUIZ_QUESTIONS.map((question) => (
+              <Card
+                key={question.id}
+                className='rounded-[16px] border-0 bg-[#fffaf2]'
+                styles={{ body: { padding: 14 } }}
+              >
+                <div className='flex flex-col gap-2'>
+                  <Text strong>{question.prompt}</Text>
+                  <Radio.Group
+                    value={quizAnswers[question.id]}
+                    onChange={(event) => {
+                      setQuizAnswers((previous) => ({
+                        ...previous,
+                        [question.id]: event.target.value,
+                      }));
+                    }}
+                  >
+                    <div className='flex flex-col gap-2'>
+                      <Radio value='A'>{question.optionA.label}</Radio>
+                      <Radio value='B'>{question.optionB.label}</Radio>
+                    </div>
+                  </Radio.Group>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </Modal>
       </div>
     </main>
   );
