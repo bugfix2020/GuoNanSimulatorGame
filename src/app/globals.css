@@ -116,6 +116,26 @@ a {
   background: rgba(255, 253, 249, 0.9);
 }
 
+.mbti-mode-segmented.ant-segmented {
+  border-radius: 14px !important;
+  padding: 2px !important;
+  background: #d2cfcc !important;
+}
+
+.mbti-mode-segmented.ant-segmented .ant-segmented-group {
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.mbti-mode-segmented.ant-segmented .ant-segmented-item {
+  border-radius: 12px !important;
+}
+
+.mbti-mode-segmented.ant-segmented .ant-segmented-thumb {
+  border-radius: 12px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
 .ending-seal {
   background: linear-gradient(
     135deg,

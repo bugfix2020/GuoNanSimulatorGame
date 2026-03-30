@@ -41,25 +41,34 @@ function getRadarPoint(
   axisIndex: number,
   ratio: number,
   radius: number,
-  center: number,
+  centerX: number,
+  centerY: number,
   axisTotal: number
 ) {
   const angle = ((-90 + (360 / axisTotal) * axisIndex) * Math.PI) / 180;
 
   return {
-    x: center + Math.cos(angle) * radius * ratio,
-    y: center + Math.sin(angle) * radius * ratio,
+    x: centerX + Math.cos(angle) * radius * ratio,
+    y: centerY + Math.sin(angle) * radius * ratio,
   };
 }
 
 function buildRadarPolygonPoints(
   ratio: number,
   radius: number,
-  center: number,
+  centerX: number,
+  centerY: number,
   axisTotal: number
 ) {
   return PROFILE_RADAR_AXES.map((_, axisIndex) => {
-    const point = getRadarPoint(axisIndex, ratio, radius, center, axisTotal);
+    const point = getRadarPoint(
+      axisIndex,
+      ratio,
+      radius,
+      centerX,
+      centerY,
+      axisTotal
+    );
     return `${point.x},${point.y}`;
   }).join(' ');
 }
@@ -92,6 +101,9 @@ export function HomeView({ story }: HomeViewProps) {
   const activeQuestionAnswer = activeQuestion
     ? quizAnswers[activeQuestion.id]
     : undefined;
+  const radarCenterX = 130;
+  const radarCenterY = 145;
+  const radarRadius = 88;
 
   const startLocked = !profile;
 
@@ -271,6 +283,7 @@ export function HomeView({ story }: HomeViewProps) {
           <div className='flex flex-col gap-4'>
             <Segmented
               block
+              className='mbti-mode-segmented'
               value={entryMode}
               options={[
                 { label: '直接选择 MBTI', value: 'manual' },
@@ -322,10 +335,9 @@ export function HomeView({ story }: HomeViewProps) {
                 />
                 <Steps
                   size='small'
+                  progressDot
                   current={currentQuizStep}
-                  items={MBTI_QUIZ_QUESTIONS.map((_, index) => ({
-                    title: `题 ${index + 1}`,
-                  }))}
+                  items={MBTI_QUIZ_QUESTIONS.map(() => ({ title: '' }))}
                 />
 
                 {activeQuestion ? (
@@ -408,7 +420,13 @@ export function HomeView({ story }: HomeViewProps) {
                     {[0.25, 0.5, 0.75, 1].map((ring) => (
                       <polygon
                         key={ring}
-                        points={buildRadarPolygonPoints(ring, 104, 130, PROFILE_RADAR_AXES.length)}
+                        points={buildRadarPolygonPoints(
+                          ring,
+                          radarRadius,
+                          radarCenterX,
+                          radarCenterY,
+                          PROFILE_RADAR_AXES.length
+                        )}
                         fill='none'
                         stroke='rgba(122, 75, 54, 0.35)'
                         strokeWidth='1'
@@ -419,23 +437,25 @@ export function HomeView({ story }: HomeViewProps) {
                       const edgePoint = getRadarPoint(
                         axisIndex,
                         1,
-                        104,
-                        130,
+                        radarRadius,
+                        radarCenterX,
+                        radarCenterY,
                         PROFILE_RADAR_AXES.length
                       );
                       const labelPoint = getRadarPoint(
                         axisIndex,
-                        1.2,
-                        104,
-                        130,
+                        1.16,
+                        radarRadius,
+                        radarCenterX,
+                        radarCenterY,
                         PROFILE_RADAR_AXES.length
                       );
 
                       return (
                         <g key={axis.key}>
                           <line
-                            x1='130'
-                            y1='130'
+                            x1={radarCenterX}
+                            y1={radarCenterY}
                             x2={edgePoint.x}
                             y2={edgePoint.y}
                             stroke='rgba(122, 75, 54, 0.45)'
@@ -458,8 +478,9 @@ export function HomeView({ story }: HomeViewProps) {
                     <polygon
                       points={buildRadarPolygonPoints(
                         1,
-                        104,
-                        130,
+                        radarRadius,
+                        radarCenterX,
+                        radarCenterY,
                         PROFILE_RADAR_AXES.length
                       )}
                       fill='none'
@@ -472,8 +493,9 @@ export function HomeView({ story }: HomeViewProps) {
                         const point = getRadarPoint(
                           axisIndex,
                           profile.attributes[axis.key] / 100,
-                          104,
-                          130,
+                          radarRadius,
+                          radarCenterX,
+                          radarCenterY,
                           PROFILE_RADAR_AXES.length
                         );
                         return `${point.x},${point.y}`;
@@ -487,8 +509,9 @@ export function HomeView({ story }: HomeViewProps) {
                       const point = getRadarPoint(
                         axisIndex,
                         profile.attributes[axis.key] / 100,
-                        104,
-                        130,
+                        radarRadius,
+                        radarCenterX,
+                        radarCenterY,
                         PROFILE_RADAR_AXES.length
                       );
 
